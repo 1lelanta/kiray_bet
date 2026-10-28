@@ -10,25 +10,25 @@
 schema: "1"
 
 # Your working title. You may change it later; keep this file up to date.
-title: "Campus Lost and Found"
+title: "Kiray Bet"
 
 # One sentence: "An app that helps [users] to [do what] so that [benefit]."
-summary: "An app that helps students to report and find lost items on campus so that more of them are returned."
+summary: "An app that helps young workers and others to find and compare rental houses near them so that they avoid overpriced and scam listings."
 
 members:
   - name: "Lelisa Tesfaye"              # full name, as in the student register
     student_id: "UGR/0486/16"         # exactly as on your student ID card
     email: "kekikoki4@gmail.com" # an address you read every day
     github: "1lelanta"            # your GitHub username, without @
-  - name: ""
-    student_id: ""
-    email: ""
-    github: ""
-  - name: ""
-    student_id: ""
-    email: ""
-    github: ""
-  - name: ""
-    student_id: ""
-    email: ""
-    github: ""
+  - name: "Miruts Gebremeskel"
+    student_id: "UGR/7870/16"
+    email: "miruts1552@gmail.com"
+    github: "miruts-code"
+  - name: "Natnael Girmay"
+    student_id: "UGR/8547/16"
+    email: "nattygirmay@gmail.com"
+    github: "nattygirmay-a11y"
+  - name: "Molalign Michael"
+    student_id: "UGR/5404/16"
+    email: "michaelmolalignapplication@gmail.com"
+    github: "Mohamiki"
