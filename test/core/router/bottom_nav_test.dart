@@ -7,12 +7,23 @@ import 'package:kiray_bet/features/compare/presentation/screens/compare_selectio
 import 'package:kiray_bet/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:kiray_bet/features/listings/presentation/screens/listings_screen.dart';
 import 'package:kiray_bet/features/profile/presentation/screens/profile_screen.dart';
+import 'package:kiray_bet/features/onboarding/data/in_memory_onboarding_repository.dart';
+import 'package:kiray_bet/features/onboarding/presentation/providers/onboarding_providers.dart';
 
 void main() {
   testWidgets('bottom navigation switches primary branches', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const ProviderScope(child: KirayBetApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          onboardingRepositoryProvider.overrideWithValue(
+            InMemoryOnboardingRepository(hasSeenOnboarding: true),
+          ),
+        ],
+        child: const KirayBetApp(),
+      ),
+    );
     await tester.pumpAndSettle();
 
     expect(find.byType(ListingsScreen), findsOneWidget);
