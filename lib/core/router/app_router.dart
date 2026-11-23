@@ -8,6 +8,8 @@ import '../../features/favorites/presentation/screens/favorites_screen.dart';
 import '../../features/listings/presentation/screens/listing_detail_screen.dart';
 import '../../features/listings/presentation/screens/listings_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
+import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
+import '../../features/onboarding/domain/onboarding_state.dart';
 import '../../features/profile/presentation/screens/my_listings_screen.dart';
 import '../../features/profile/presentation/screens/post_listing_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
@@ -21,11 +23,29 @@ import 'app_shell.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
+class _RouterRefreshNotifier extends ChangeNotifier {
+  void refresh() => notifyListeners();
+}
+
 final appRouterProvider = Provider<GoRouter>((ref) {
+  final refreshNotifier = _RouterRefreshNotifier();
+  ref.onDispose(refreshNotifier.dispose);
+  ref.listen<OnboardingState>(
+    onboardingNotifierProvider,
+    (_, _) => refreshNotifier.refresh(),
+  );
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: RoutePaths.listings,
-    // TODO: Onboarding redirect comes in the next PR.
+    initialLocation: RoutePaths.onboarding,
+    refreshListenable: refreshNotifier,
+    redirect: (context, state) {
+      final hasSeen = ref.read(onboardingNotifierProvider).hasSeenOnboarding;
+      final isOnboarding = state.uri.path == RoutePaths.onboarding;
+      if (!hasSeen && !isOnboarding) return RoutePaths.onboarding;
+      if (hasSeen && isOnboarding) return RoutePaths.listings;
+      return null;
+    },
     errorBuilder: (context, state) =>
         Scaffold(body: ErrorView(message: 'Page not found: ${state.uri}')),
     routes: [
