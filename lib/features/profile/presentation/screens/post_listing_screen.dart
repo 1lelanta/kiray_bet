@@ -11,10 +11,7 @@ class PostListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Post Listing',
-      body: EmptyState(
-        icon: Icons.add_home_outlined,
-        title: 'Post Listing',
-      ),
+      body: EmptyState(icon: Icons.add_home_outlined, title: 'Post Listing'),
     );
   }
 }

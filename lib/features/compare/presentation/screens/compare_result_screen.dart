@@ -11,10 +11,7 @@ class CompareResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Compare Result',
-      body: EmptyState(
-        icon: Icons.analytics_outlined,
-        title: 'Compare Result',
-      ),
+      body: EmptyState(icon: Icons.analytics_outlined, title: 'Compare Result'),
     );
   }
 }

@@ -11,10 +11,7 @@ class CompareSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Compare',
-      body: EmptyState(
-        icon: Icons.compare_arrows,
-        title: 'Compare',
-      ),
+      body: EmptyState(icon: Icons.compare_arrows, title: 'Compare'),
     );
   }
 }

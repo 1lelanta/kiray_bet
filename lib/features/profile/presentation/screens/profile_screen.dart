@@ -11,10 +11,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Profile',
-      body: EmptyState(
-        icon: Icons.person_outline,
-        title: 'Profile',
-      ),
+      body: EmptyState(icon: Icons.person_outline, title: 'Profile'),
     );
   }
 }

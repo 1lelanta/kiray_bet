@@ -11,10 +11,7 @@ class FavoritesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Favorites',
-      body: EmptyState(
-        icon: Icons.favorite_border,
-        title: 'Favorites',
-      ),
+      body: EmptyState(icon: Icons.favorite_border, title: 'Favorites'),
     );
   }
 }

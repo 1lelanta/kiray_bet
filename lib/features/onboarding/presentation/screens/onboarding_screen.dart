@@ -11,10 +11,7 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Onboarding',
-      body: EmptyState(
-        icon: Icons.waving_hand_outlined,
-        title: 'Onboarding',
-      ),
+      body: EmptyState(icon: Icons.waving_hand_outlined, title: 'Onboarding'),
     );
   }
 }

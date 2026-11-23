@@ -11,10 +11,7 @@ class MyListingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'My Listings',
-      body: EmptyState(
-        icon: Icons.list_alt_outlined,
-        title: 'My Listings',
-      ),
+      body: EmptyState(icon: Icons.list_alt_outlined, title: 'My Listings'),
     );
   }
 }

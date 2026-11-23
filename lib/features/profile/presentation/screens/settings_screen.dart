@@ -11,10 +11,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const AppScaffold(
       title: 'Settings',
-      body: EmptyState(
-        icon: Icons.settings_outlined,
-        title: 'Settings',
-      ),
+      body: EmptyState(icon: Icons.settings_outlined, title: 'Settings'),
     );
   }
 }
