@@ -1,16 +1,16 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-import 'package:kiray_bet/core/widgets/empty_state.dart';
-import 'package:kiray_bet/main.dart';
+import 'package:kiray_bet/app.dart';
+import 'package:kiray_bet/features/onboarding/presentation/screens/onboarding_screen.dart';
 
 void main() {
-  testWidgets('app builds and shows the empty state', (
+  testWidgets('app builds and shows the onboarding screen', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const ProviderScope(child: MyApp()));
+    await tester.pumpWidget(const ProviderScope(child: KirayBetApp()));
+    await tester.pumpAndSettle();
 
-    expect(find.byType(EmptyState), findsOneWidget);
-    expect(find.text('No listings yet'), findsOneWidget);
+    expect(find.byType(OnboardingScreen), findsOneWidget);
   });
 }
