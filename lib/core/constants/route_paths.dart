@@ -3,6 +3,7 @@ abstract final class RoutePaths {
   static const onboarding = '/onboarding';
   static const splash = '/welcome';
   static const login = '/login';
+  static const register = '/register';
   static const moderation = '/moderation';
   static const listings = '/listings';
   static const listingDetail = '/listings/:id';
