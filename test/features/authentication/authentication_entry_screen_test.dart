@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kiray_bet/app.dart';
@@ -13,7 +13,7 @@ import 'package:kiray_bet/features/listings/presentation/screens/listings_screen
 import 'package:kiray_bet/features/onboarding/data/in_memory_onboarding_repository.dart';
 import 'package:kiray_bet/features/onboarding/presentation/providers/onboarding_providers.dart';
 import 'package:kiray_bet/features/profile/presentation/screens/my_listings_screen.dart';
-
+import 'package:kiray_bet/features/report/presentation/screens/moderation_screen.dart';
 void main() {
   testWidgets('language selection updates shared language state before login', (
     tester,
@@ -74,10 +74,7 @@ void main() {
     await _enter(tester, AuthenticationStrings.email, 'admin@kiray.demo');
     await _enter(tester, AuthenticationStrings.password, 'Demo1234');
     await _submitLogin(tester);
-    expect(
-      find.text(AuthenticationStrings.moderationUnavailable),
-      findsOneWidget,
-    );
+    expect(find.byType(ModerationScreen), findsOneWidget);
   });
 
   testWidgets('registration validates inputs and prevents duplicate emails', (

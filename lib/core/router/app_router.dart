@@ -15,9 +15,7 @@ import '../../features/onboarding/domain/onboarding_state.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/authentication/presentation/authentication_destination.dart';
-import '../../features/authentication/presentation/authentication_strings.dart';
 import '../../features/authentication/presentation/providers/authentication_providers.dart';
-import '../../features/authentication/presentation/screens/auth_feature_placeholder_screen.dart';
 import '../../features/authentication/presentation/screens/login_screen.dart';
 import '../../features/authentication/presentation/screens/registration_screen.dart';
 import '../../features/authentication/presentation/screens/splash_language_screen.dart';
@@ -30,6 +28,7 @@ import '../constants/route_names.dart';
 import '../constants/route_paths.dart';
 import '../widgets/error_view.dart';
 import 'app_shell.dart';
+import '../../features/report/presentation/screens/moderation_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -92,14 +91,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const RegistrationScreen(),
       ),
       GoRoute(
-        path: RoutePaths.moderation,
-        name: RouteNames.moderation,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const AuthFeaturePlaceholderScreen(
-          title: AuthenticationStrings.moderationTitle,
-          message: AuthenticationStrings.moderationUnavailable,
-        ),
-      ),
+  path: RoutePaths.moderation,
+  name: RouteNames.moderation,
+  parentNavigatorKey: _rootNavigatorKey,
+  builder: (context, state) => const ModerationScreen(),
+),
       GoRoute(
         path: RoutePaths.report,
         name: RouteNames.report,

@@ -1,4 +1,5 @@
-import 'package:material_ui/material_ui.dart';
+
+import 'package:flutter/material.dart';
 
 /// A scaffold with consistent page padding and optional app bar actions.
 class AppScaffold extends StatelessWidget {
@@ -22,8 +23,16 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: title == null
           ? null
-          : AppBar(title: Text(title!), actions: actions),
-      body: body == null ? null : Padding(padding: padding, child: body),
+          : AppBar(
+              title: Text(title!),
+              actions: actions,
+            ),
+      body: body == null
+          ? null
+          : Padding(
+              padding: padding,
+              child: body,
+            ),
       floatingActionButton: floatingActionButton,
     );
   }
