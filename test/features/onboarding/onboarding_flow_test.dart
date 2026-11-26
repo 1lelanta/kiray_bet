@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:kiray_bet/app.dart';
 import 'package:kiray_bet/features/authentication/presentation/authentication_strings.dart';
-import 'package:kiray_bet/features/authentication/presentation/screens/auth_feature_placeholder_screen.dart';
+import 'package:kiray_bet/features/authentication/presentation/screens/login_screen.dart';
 import 'package:kiray_bet/features/authentication/presentation/screens/splash_language_screen.dart';
 import 'package:kiray_bet/features/onboarding/presentation/screens/onboarding_screen.dart';
 
@@ -29,6 +29,6 @@ void main() {
 
     await tester.tap(find.text(AuthenticationStrings.continueLabel));
     await tester.pumpAndSettle();
-    expect(find.byType(AuthFeaturePlaceholderScreen), findsOneWidget);
+    expect(find.byType(LoginScreen), findsOneWidget);
   });
 }
