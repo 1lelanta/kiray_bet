@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/widgets/app_scaffold.dart';
+import '../../domain/listing.dart';
 import '../../domain/viewing_request.dart';
 import '../listing_strings.dart';
 import '../providers/listing_data_providers.dart';
@@ -110,7 +111,26 @@ class ViewingRequestsScreen extends ConsumerWidget {
   Future<void> _create(BuildContext context, WidgetRef ref) async {
     final tenantId = ref.read(currentTenantIdProvider);
     final listing = await ref.read(listingByIdProvider(listingId!).future);
-    if (tenantId == null || listing == null || !context.mounted) return;
+    if (!context.mounted) return;
+    if (tenantId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(ListingStrings.signInRequired)),
+      );
+      return;
+    }
+    if (listing == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text(ListingStrings.notFound)));
+      return;
+    }
+    if (listing.status != ListingStatus.available ||
+        listing.ownerId == tenantId ||
+        listing.ownerId == ref.read(currentOwnerIdProvider)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(ListingStrings.requestUnavailable)),
+      );
+      return;
+    }
     final day = await showDatePicker(
       context: context,
       firstDate: DateTime.now().add(const Duration(days: 1)),
@@ -150,7 +170,7 @@ class ViewingRequestsScreen extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
+            onPressed: () => Navigator.pop(dialogContext, ''),
             child: const Text(ListingStrings.skip),
           ),
           FilledButton(
@@ -162,14 +182,14 @@ class ViewingRequestsScreen extends ConsumerWidget {
       ),
     );
     messageController.dispose();
-    if (!context.mounted) return;
+    if (message == null || !context.mounted) return;
     final request = ViewingRequest(
       id: 'viewing-${DateTime.now().microsecondsSinceEpoch}',
       listingId: listing.id,
       tenantId: tenantId,
       ownerId: listing.ownerId,
       proposedDateTime: proposed,
-      message: message?.isEmpty == true ? null : message,
+      message: message.isEmpty ? null : message,
       createdAt: DateTime.now(),
     );
     await ref.read(viewingRequestRepositoryProvider).create(request);

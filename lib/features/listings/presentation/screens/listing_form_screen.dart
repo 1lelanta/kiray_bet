@@ -335,6 +335,9 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
     }
     ref.invalidate(allListingsProvider);
     ref.invalidate(currentOwnerListingsProvider);
+    if (previous != null) {
+      ref.invalidate(listingByIdProvider(listing.id));
+    }
     if (mounted) context.pop();
   }
 }

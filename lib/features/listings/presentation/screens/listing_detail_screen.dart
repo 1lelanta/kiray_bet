@@ -43,7 +43,10 @@ class _Details extends ConsumerWidget {
     final locale = Localizations.localeOf(context).languageCode;
     final userId =
         ref.watch(currentTenantIdProvider) ?? ref.watch(currentOwnerIdProvider);
-    final isOwner = ref.watch(currentOwnerIdProvider) == listing.ownerId;
+    final tenantId = ref.watch(currentTenantIdProvider);
+    final ownerId = ref.watch(currentOwnerIdProvider);
+    final isOwner = ownerId == listing.ownerId;
+    final isOwnListing = isOwner || tenantId == listing.ownerId;
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: [
@@ -84,13 +87,16 @@ class _Details extends ConsumerWidget {
         const Text(ListingStrings.demoOwnerPhone),
         if (listing.status != ListingStatus.available)
           Text(listing.status.name),
-        OutlinedButton(
-          onPressed: () => context.pushNamed(
-            RouteNames.requestViewing,
-            pathParameters: {'listingId': listing.id},
+        if (tenantId != null &&
+            listing.status == ListingStatus.available &&
+            !isOwnListing)
+          OutlinedButton(
+            onPressed: () => context.pushNamed(
+              RouteNames.requestViewing,
+              pathParameters: {'listingId': listing.id},
+            ),
+            child: const Text(ListingStrings.requestViewing),
           ),
-          child: const Text(ListingStrings.requestViewing),
-        ),
         if (userId != null && !isOwner)
           TextButton(
             onPressed: () => context.pushNamed(

@@ -85,4 +85,6 @@ abstract final class ListingStrings {
   static const accept = 'Accept';
   static const decline = 'Decline';
   static const futureDateRequired = 'Choose a date and time in the future.';
+  static const requestUnavailable =
+      'Viewing requests are only available for listings you do not own that are available.';
 }

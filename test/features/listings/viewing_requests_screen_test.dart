@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kiray_bet/core/constants/demo_ids.dart';
+import 'package:kiray_bet/features/listings/data/in_memory_listing_repository.dart';
 import 'package:kiray_bet/features/listings/data/in_memory_viewing_request_repository.dart';
+import 'package:kiray_bet/features/listings/domain/listing.dart';
 import 'package:kiray_bet/features/listings/domain/viewing_request.dart';
 import 'package:kiray_bet/features/listings/presentation/listing_strings.dart';
 import 'package:kiray_bet/features/listings/presentation/providers/listing_data_providers.dart';
+import 'package:kiray_bet/features/listings/presentation/screens/listing_detail_screen.dart';
 import 'package:kiray_bet/features/listings/presentation/screens/viewing_requests_screen.dart';
 
 void main() {
@@ -90,4 +93,186 @@ void main() {
 
     expect(find.text(ListingStrings.requestViewing), findsOneWidget);
   });
+
+  testWidgets('dismissing the optional message dialog cancels the request', (
+    tester,
+  ) async {
+    final requests = InMemoryViewingRequestRepository(requests: []);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentTenantIdProvider.overrideWith((ref) => DemoIds.tenant),
+          currentOwnerIdProvider.overrideWith((ref) => null),
+          listingRepositoryProvider.overrideWith(
+            (ref) => InMemoryListingRepository(),
+          ),
+          viewingRequestRepositoryProvider.overrideWith((ref) => requests),
+        ],
+        child: const MaterialApp(
+          home: ViewingRequestsScreen(listingId: 'bole-01'),
+        ),
+      ),
+    );
+    await _openMessageDialog(tester);
+
+    await tester.tapAt(const Offset(2, 2));
+    await tester.pumpAndSettle();
+
+    expect(await requests.listByTenant(DemoIds.tenant), isEmpty);
+  });
+
+  testWidgets('skipping the optional message still creates the request', (
+    tester,
+  ) async {
+    final requests = InMemoryViewingRequestRepository(requests: []);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentTenantIdProvider.overrideWith((ref) => DemoIds.tenant),
+          currentOwnerIdProvider.overrideWith((ref) => null),
+          listingRepositoryProvider.overrideWith(
+            (ref) => InMemoryListingRepository(),
+          ),
+          viewingRequestRepositoryProvider.overrideWith((ref) => requests),
+        ],
+        child: const MaterialApp(
+          home: ViewingRequestsScreen(listingId: 'bole-01'),
+        ),
+      ),
+    );
+    await _openMessageDialog(tester);
+
+    await tester.tap(find.text(ListingStrings.skip));
+    await tester.pumpAndSettle();
+
+    final created = await requests.listByTenant(DemoIds.tenant);
+    expect(created, hasLength(1));
+    expect(created.single.message, isNull);
+  });
+
+  testWidgets("rejects viewing requests for an owner's own listing", (
+    tester,
+  ) async {
+    final requests = InMemoryViewingRequestRepository(requests: []);
+    final listing = demoListings.first.copyWith(
+      id: 'my-listing',
+      ownerId: DemoIds.owner,
+      status: ListingStatus.available,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentTenantIdProvider.overrideWith((ref) => DemoIds.tenant),
+          currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
+          listingRepositoryProvider.overrideWith(
+            (ref) => InMemoryListingRepository(initialListings: [listing]),
+          ),
+          viewingRequestRepositoryProvider.overrideWith((ref) => requests),
+        ],
+        child: const MaterialApp(
+          home: ViewingRequestsScreen(listingId: 'my-listing'),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text(ListingStrings.requestUnavailable), findsOneWidget);
+    expect(await requests.listByTenant(DemoIds.tenant), isEmpty);
+  });
+
+  testWidgets('rejects viewing requests for rented listings', (tester) async {
+    final requests = InMemoryViewingRequestRepository(requests: []);
+    final listing = demoListings.first.copyWith(
+      id: 'rented-listing',
+      ownerId: 'other-owner',
+      status: ListingStatus.rented,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentTenantIdProvider.overrideWith((ref) => DemoIds.tenant),
+          currentOwnerIdProvider.overrideWith((ref) => null),
+          listingRepositoryProvider.overrideWith(
+            (ref) => InMemoryListingRepository(initialListings: [listing]),
+          ),
+          viewingRequestRepositoryProvider.overrideWith((ref) => requests),
+        ],
+        child: const MaterialApp(
+          home: ViewingRequestsScreen(listingId: 'rented-listing'),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+
+    expect(find.text(ListingStrings.requestUnavailable), findsOneWidget);
+    expect(await requests.listByTenant(DemoIds.tenant), isEmpty);
+  });
+
+  testWidgets('detail screen hides request action for own listings', (
+    tester,
+  ) async {
+    final listing = demoListings.first.copyWith(
+      id: 'my-listing',
+      ownerId: DemoIds.owner,
+      status: ListingStatus.available,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentTenantIdProvider.overrideWith((ref) => DemoIds.tenant),
+          currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
+          listingRepositoryProvider.overrideWith(
+            (ref) => InMemoryListingRepository(initialListings: [listing]),
+          ),
+        ],
+        child: const MaterialApp(
+          home: ListingDetailScreen(listingId: 'my-listing'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(ListingStrings.requestViewing), findsNothing);
+  });
+
+  testWidgets('detail screen hides request action for rented listings', (
+    tester,
+  ) async {
+    final listing = demoListings.first.copyWith(
+      id: 'rented-listing',
+      ownerId: 'other-owner',
+      status: ListingStatus.rented,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentTenantIdProvider.overrideWith((ref) => DemoIds.tenant),
+          currentOwnerIdProvider.overrideWith((ref) => null),
+          listingRepositoryProvider.overrideWith(
+            (ref) => InMemoryListingRepository(initialListings: [listing]),
+          ),
+        ],
+        child: const MaterialApp(
+          home: ListingDetailScreen(listingId: 'rented-listing'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(ListingStrings.requestViewing), findsNothing);
+  });
+}
+
+Future<void> _openMessageDialog(WidgetTester tester) async {
+  await tester.tap(find.byType(FloatingActionButton));
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('OK').last);
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('OK').last);
+  await tester.pumpAndSettle();
+  expect(find.byType(AlertDialog), findsOneWidget);
 }

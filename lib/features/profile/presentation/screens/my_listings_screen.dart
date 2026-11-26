@@ -59,6 +59,7 @@ class _OwnerListingTile extends ConsumerWidget {
               .updateListingStatus(listing.id, status);
           ref.invalidate(currentOwnerListingsProvider);
           ref.invalidate(allListingsProvider);
+          ref.invalidate(listingByIdProvider(listing.id));
         },
         itemBuilder: (context) => const [
           PopupMenuItem(

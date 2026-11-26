@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kiray_bet/core/constants/demo_ids.dart';
 import 'package:kiray_bet/features/listings/data/in_memory_listing_repository.dart';
+import 'package:kiray_bet/features/listings/presentation/screens/listing_detail_screen.dart';
 import 'package:kiray_bet/features/listings/presentation/listing_strings.dart';
 import 'package:kiray_bet/features/listings/presentation/providers/listing_data_providers.dart';
 import 'package:kiray_bet/features/listings/presentation/screens/listing_form_screen.dart';
@@ -108,6 +110,58 @@ void main() {
     expect(titleField.controller?.text, '3 bedroom home in Old Airport');
     await _scrollTo(tester, find.byKey(const Key(ListingStrings.status)));
     expect(find.text(ListingStrings.status), findsOneWidget);
+  });
+
+  testWidgets('saving an edit refreshes the listing detail data', (
+    tester,
+  ) async {
+    final repository = InMemoryListingRepository();
+    final router = GoRouter(
+      initialLocation: '/listings/bole-02/edit',
+      routes: [
+        GoRoute(
+          path: '/listings/:id',
+          builder: (context, state) =>
+              ListingDetailScreen(listingId: state.pathParameters['id']!),
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (context, state) =>
+                  ListingFormScreen(listingId: state.pathParameters['id']!),
+            ),
+          ],
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
+          listingRepositoryProvider.overrideWith((ref) => repository),
+        ],
+        child: MaterialApp.router(routerConfig: router),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await _scrollTo(tester, find.byKey(const Key(ListingStrings.title)));
+    await tester.enterText(
+      find.byKey(const Key(ListingStrings.title)),
+      'Updated listing title',
+    );
+    await tester.testTextInput.receiveAction(TextInputAction.done);
+    await tester.pumpAndSettle();
+    await _scrollTo(tester, find.byKey(const Key(ListingStrings.saveListing)));
+    await tester.tap(find.byKey(const Key(ListingStrings.saveListing)));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Updated listing title'), findsOneWidget);
+    expect(
+      (await repository.getListingById('bole-02'))?.title,
+      'Updated listing title',
+    );
   });
 
   testWidgets('owner cannot edit another owner listing', (tester) async {
