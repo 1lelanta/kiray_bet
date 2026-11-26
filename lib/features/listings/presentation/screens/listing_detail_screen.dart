@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/route_names.dart';
-import '../../../../../core/constants/route_paths.dart';
 import '../../../../../core/formatters/birr_formatter.dart';
 import '../../../../../core/widgets/app_scaffold.dart';
 import '../../../../../core/widgets/error_view.dart';
