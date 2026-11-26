@@ -3,6 +3,11 @@ abstract final class RoutePaths {
   static const onboarding = '/onboarding';
   static const listings = '/listings';
   static const listingDetail = '/listings/:id';
+  static const listingFilter = '/listings/filter';
+  static const listingMap = '/listings/map';
+  static const listingEdit = '/listings/:id/edit';
+  static const viewingRequests = '/viewing-requests';
+  static const requestViewing = '/viewing-requests/:listingId';
   static const compare = '/compare';
   static const compareResult = '/compare/result';
   static const favorites = '/favorites';
@@ -14,6 +19,12 @@ abstract final class RoutePaths {
 
   static String listingDetailPath(String id) =>
       '/listings/${Uri.encodeComponent(id)}';
+
+  static String listingEditPath(String id) =>
+      '/listings/${Uri.encodeComponent(id)}/edit';
+
+  static String requestViewingPath(String id) =>
+      '/viewing-requests/${Uri.encodeComponent(id)}';
 
   static String reportPath(String listingId) =>
       '/report/${Uri.encodeComponent(listingId)}';
