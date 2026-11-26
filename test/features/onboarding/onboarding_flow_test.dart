@@ -2,11 +2,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:kiray_bet/app.dart';
-import 'package:kiray_bet/features/listings/presentation/screens/listings_screen.dart';
+import 'package:kiray_bet/features/authentication/presentation/authentication_strings.dart';
+import 'package:kiray_bet/features/authentication/presentation/screens/auth_feature_placeholder_screen.dart';
+import 'package:kiray_bet/features/authentication/presentation/screens/splash_language_screen.dart';
 import 'package:kiray_bet/features/onboarding/presentation/screens/onboarding_screen.dart';
 
 void main() {
-  testWidgets('completing onboarding opens listings', (
+  testWidgets('completing onboarding opens language selection before login', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const ProviderScope(child: KirayBetApp()));
@@ -23,6 +25,10 @@ void main() {
     await tester.tap(find.text('Get started'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(ListingsScreen), findsOneWidget);
+    expect(find.byType(SplashLanguageScreen), findsOneWidget);
+
+    await tester.tap(find.text(AuthenticationStrings.continueLabel));
+    await tester.pumpAndSettle();
+    expect(find.byType(AuthFeaturePlaceholderScreen), findsOneWidget);
   });
 }
