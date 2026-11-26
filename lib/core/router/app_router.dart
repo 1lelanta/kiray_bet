@@ -7,10 +7,13 @@ import '../../features/compare/presentation/screens/compare_selection_screen.dar
 import '../../features/favorites/presentation/screens/favorites_screen.dart';
 import '../../features/listings/presentation/screens/listing_detail_screen.dart';
 import '../../features/listings/presentation/screens/listing_filter_screen.dart';
+import '../../features/listings/presentation/screens/listing_form_screen.dart';
+import '../../features/listings/presentation/screens/listing_map_screen.dart';
 import '../../features/listings/presentation/screens/listings_screen.dart';
-import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
-import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
+import '../../features/listings/presentation/screens/viewing_requests_screen.dart';
 import '../../features/onboarding/domain/onboarding_state.dart';
+import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
+import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/profile/presentation/screens/my_listings_screen.dart';
 import '../../features/profile/presentation/screens/post_listing_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
@@ -35,16 +38,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     onboardingNotifierProvider,
     (_, _) => refreshNotifier.refresh(),
   );
-
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: RoutePaths.onboarding,
     refreshListenable: refreshNotifier,
     redirect: (context, state) {
-      final hasSeen = ref.read(onboardingNotifierProvider).hasSeenOnboarding;
-      final isOnboarding = state.uri.path == RoutePaths.onboarding;
-      if (!hasSeen && !isOnboarding) return RoutePaths.onboarding;
-      if (hasSeen && isOnboarding) return RoutePaths.listings;
+      final seen = ref.read(onboardingNotifierProvider).hasSeenOnboarding;
+      final onboarding = state.uri.path == RoutePaths.onboarding;
+      if (!seen && !onboarding) return RoutePaths.onboarding;
+      if (seen && onboarding) return RoutePaths.listings;
       return null;
     },
     errorBuilder: (context, state) =>
@@ -70,10 +72,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const PostListingScreen(),
       ),
+      GoRoute(
+        path: RoutePaths.viewingRequests,
+        name: RouteNames.viewingRequests,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const ViewingRequestsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.requestViewing,
+        name: RouteNames.requestViewing,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => ViewingRequestsScreen(
+          listingId: state.pathParameters['listingId'] ?? '',
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state, navigationShell) =>
-            AppShell(navigationShell: navigationShell),
+        builder: (context, state, shell) => AppShell(navigationShell: shell),
         branches: [
           StatefulShellBranch(
             navigatorKey: _shellNavigatorKey,
@@ -90,12 +105,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) => const ListingFilterScreen(),
                   ),
                   GoRoute(
+                    path: 'map',
+                    name: RouteNames.listingMap,
+                    builder: (context, state) => const ListingMapScreen(),
+                  ),
+                  GoRoute(
                     path: ':id',
                     name: RouteNames.listingDetail,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ListingDetailScreen(
                       listingId: state.pathParameters['id'] ?? '',
                     ),
+                    routes: [
+                      GoRoute(
+                        path: 'edit',
+                        name: RouteNames.listingEdit,
+                        parentNavigatorKey: _rootNavigatorKey,
+                        builder: (context, state) => ListingFormScreen(
+                          listingId: state.pathParameters['id'] ?? '',
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
