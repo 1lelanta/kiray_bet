@@ -15,7 +15,7 @@ import '../providers/listing_providers.dart';
 import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingDetailScreen extends ConsumerWidget {
-  const ListingDetailScreen({super.key, required this.listingId});
+  ListingDetailScreen({super.key, required this.listingId});
   final String listingId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,10 +23,10 @@ class ListingDetailScreen extends ConsumerWidget {
     return AppScaffold(
       title: ListingStrings.details,
       body: result.when(
-        loading: () => const LoadingView(),
-        error: (error, stack) => const ErrorView(message: ListingStrings.error),
+        loading: () => LoadingView(),
+        error: (error, stack) => ErrorView(message: ListingStrings.error),
         data: (listing) => listing == null
-            ? const EmptyState(
+            ? EmptyState(
                 icon: Icons.home_work_outlined,
                 title: ListingStrings.notFound,
               )
@@ -52,14 +52,14 @@ class _Details extends ConsumerWidget {
       padding: const EdgeInsets.only(bottom: 24),
       children: [
         FavoriteButton(listingId: listing.id),
-        const SizedBox(
+        SizedBox(
           height: 180,
           child: ColoredBox(
             color: Color(0xFFE1E8E5),
             child: Icon(Icons.home_work_outlined, size: 64),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Text(listing.title, style: Theme.of(context).textTheme.headlineSmall),
         Text(
           formatBirr(listing.monthlyRentBirr, locale),
@@ -85,8 +85,8 @@ class _Details extends ConsumerWidget {
           ListingStrings.ownerContact,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const Text(ListingStrings.demoOwnerName),
-        const Text(ListingStrings.demoOwnerPhone),
+        Text(ListingStrings.demoOwnerName),
+        Text(ListingStrings.demoOwnerPhone),
         if (listing.status != ListingStatus.available)
           Text(listing.status.name),
         if (tenantId != null &&
@@ -97,7 +97,7 @@ class _Details extends ConsumerWidget {
               RouteNames.requestViewing,
               pathParameters: {'listingId': listing.id},
             ),
-            child: const Text(ListingStrings.requestViewing),
+            child: Text(ListingStrings.requestViewing),
           ),
         if (userId != null && !isOwner)
           TextButton(
@@ -105,7 +105,7 @@ class _Details extends ConsumerWidget {
               RouteNames.report,
               pathParameters: {'listingId': listing.id},
             ),
-            child: const Text(ListingStrings.report),
+            child: Text(ListingStrings.report),
           ),
         const SizedBox.shrink(),
       ],

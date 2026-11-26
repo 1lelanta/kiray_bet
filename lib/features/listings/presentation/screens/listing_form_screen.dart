@@ -8,7 +8,7 @@ import '../providers/listing_data_providers.dart';
 import '../providers/listing_providers.dart';
 
 class ListingFormScreen extends ConsumerStatefulWidget {
-  const ListingFormScreen({super.key, this.listingId});
+  ListingFormScreen({super.key, this.listingId});
   final String? listingId;
 
   @override
@@ -61,17 +61,17 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
       final found = ref.watch(listingByIdProvider(widget.listingId!));
       return found.when(
         loading: () =>
-            const Scaffold(body: Center(child: CircularProgressIndicator())),
+            Scaffold(body: Center(child: CircularProgressIndicator())),
         error: (e, s) =>
-            const Scaffold(body: Center(child: Text(ListingStrings.error))),
+            Scaffold(body: Center(child: Text(ListingStrings.error))),
         data: (listing) {
           if (listing == null) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(child: Text(ListingStrings.notFound)),
             );
           }
           if (ref.watch(currentOwnerIdProvider) != listing.ownerId) {
-            return const Scaffold(
+            return Scaffold(
               body: Center(child: Text(ListingStrings.signInRequired)),
             );
           }
@@ -81,7 +81,7 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
       );
     }
     if (ref.watch(currentOwnerIdProvider) == null) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(child: Text(ListingStrings.signInRequired)),
       );
     }
@@ -143,7 +143,7 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
             _text(_area, ListingStrings.area, number: true, required: true),
             DropdownButtonFormField<String>(
               initialValue: _subCity,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: ListingStrings.subCity,
               ),
               items: ListingStrings.subCities
@@ -193,9 +193,9 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
             ),
             if (widget.listingId != null)
               DropdownButtonFormField<ListingStatus>(
-                key: const Key(ListingStrings.status),
+                key: Key(ListingStrings.status),
                 initialValue: _status,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: ListingStrings.status,
                 ),
                 items: ListingStatus.values
@@ -205,18 +205,18 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
               ),
             Text('${ListingStrings.photos}: ${_photos.length}'),
             TextButton.icon(
-              key: const Key(ListingStrings.addPhoto),
+              key: Key(ListingStrings.addPhoto),
               onPressed: () => setState(
                 () => _photos.add('placeholder://photo-${_photos.length + 1}'),
               ),
-              icon: const Icon(Icons.add_photo_alternate_outlined),
-              label: const Text(ListingStrings.addPhoto),
+              icon: Icon(Icons.add_photo_alternate_outlined),
+              label: Text(ListingStrings.addPhoto),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             FilledButton(
-              key: const Key(ListingStrings.saveListing),
+              key: Key(ListingStrings.saveListing),
               onPressed: _save,
-              child: const Text(ListingStrings.saveListing),
+              child: Text(ListingStrings.saveListing),
             ),
           ],
         ),
@@ -298,7 +298,7 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
     if (!_formKey.currentState!.validate()) return;
     if (_photos.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(ListingStrings.photoRequired)),
+        SnackBar(content: Text(ListingStrings.photoRequired)),
       );
       return;
     }
@@ -343,7 +343,7 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
 }
 
 class ListingDescriptionField extends StatelessWidget {
-  const ListingDescriptionField({
+  ListingDescriptionField({
     super.key,
     required this.controller,
     required this.values,
@@ -368,7 +368,7 @@ class ListingDescriptionField extends StatelessWidget {
         onChanged: (_) => onChanged?.call(),
         minLines: 3,
         maxLines: 6,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           labelText: ListingStrings.description,
         ),
       ),
@@ -389,7 +389,7 @@ const _subCityCoordinates = <String, (double, double)>{
 };
 
 class ListingDraftValues {
-  const ListingDraftValues({
+  ListingDraftValues({
     this.subCity,
     this.neighbourhood,
     this.rentBirr,

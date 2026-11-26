@@ -9,7 +9,7 @@ import '../listing_strings.dart';
 import '../providers/listing_providers.dart';
 
 class ListingFilterScreen extends ConsumerStatefulWidget {
-  const ListingFilterScreen({super.key});
+  ListingFilterScreen({super.key});
 
   @override
   ConsumerState<ListingFilterScreen> createState() =>
@@ -35,27 +35,18 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const subCities = [
-      'Bole',
-      'Yeka',
-      'Kirkos',
-      'Lideta',
-      'Arada',
-      'Nifas Silk-Lafto',
-      'Kolfe Keranio',
-      'Gullele',
-    ];
+    final subCities = ListingStrings.subCities;
     return AppScaffold(
       title: ListingStrings.filter,
       body: ListView(
         children: [
           DropdownButtonFormField<String>(
             initialValue: _subCity,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: ListingStrings.subCity,
             ),
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
                 child: Text(ListingStrings.any),
               ),
@@ -67,7 +58,7 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
           ),
           TextField(
             controller: _neighbourhoodController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: ListingStrings.neighbourhood,
             ),
           ),
@@ -75,7 +66,7 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
             controller: _minController,
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: ListingStrings.minRent,
             ),
           ),
@@ -83,17 +74,17 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
             controller: _maxController,
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: ListingStrings.maxRent,
             ),
           ),
           DropdownButtonFormField<int>(
             initialValue: _bedrooms,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: ListingStrings.bedrooms,
             ),
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: null,
                 child: Text(ListingStrings.any),
               ),
@@ -104,7 +95,7 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
           ),
           DropdownButtonFormField<ListingSortOrder>(
             initialValue: _sort,
-            items: const [
+            items: [
               DropdownMenuItem(
                 value: ListingSortOrder.newest,
                 child: Text(ListingStrings.newest),
@@ -125,7 +116,7 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
             onChanged: (value) =>
                 setState(() => _sort = value ?? ListingSortOrder.newest),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             ListingStrings.amenities,
             style: Theme.of(context).textTheme.titleMedium,
@@ -148,17 +139,17 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
                 )
                 .toList(),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           FilledButton(
             onPressed: _apply,
-            child: const Text(ListingStrings.apply),
+            child: Text(ListingStrings.apply),
           ),
           TextButton(
             onPressed: () {
               ref.read(listingFilterProvider.notifier).reset();
               context.pop();
             },
-            child: const Text(ListingStrings.clear),
+            child: Text(ListingStrings.clear),
           ),
         ],
       ),
@@ -170,7 +161,7 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
     final max = int.tryParse(_maxController.text);
     if (min != null && max != null && min > max) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(ListingStrings.rentRangeError)),
+        SnackBar(content: Text(ListingStrings.rentRangeError)),
       );
       return;
     }

@@ -11,7 +11,7 @@ import '../widgets/listing_card.dart';
 import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingsScreen extends ConsumerWidget {
-  const ListingsScreen({super.key});
+  ListingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listings = ref.watch(filteredListingsProvider);
@@ -22,17 +22,17 @@ class ListingsScreen extends ConsumerWidget {
         IconButton(
           tooltip: ListingStrings.map,
           onPressed: () => context.pushNamed(RouteNames.listingMap),
-          icon: const Icon(Icons.map_outlined),
+          icon: Icon(Icons.map_outlined),
         ),
         IconButton(
           tooltip: ListingStrings.myListings,
           onPressed: () => context.pushNamed(RouteNames.myListings),
-          icon: const Icon(Icons.list_alt_outlined),
+          icon: Icon(Icons.list_alt_outlined),
         ),
         IconButton(
           tooltip: ListingStrings.viewingRequests,
           onPressed: () => context.pushNamed(RouteNames.viewingRequests),
-          icon: const Icon(Icons.event_note_outlined),
+          icon: Icon(Icons.event_note_outlined),
         ),
         IconButton(
           tooltip: ListingStrings.filter,
@@ -40,21 +40,21 @@ class ListingsScreen extends ConsumerWidget {
           icon: Badge(
             label: Text('$count'),
             isLabelVisible: count > 0,
-            child: const Icon(Icons.tune),
+            child: Icon(Icons.tune),
           ),
         ),
       ],
       body: listings.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Center(child: CircularProgressIndicator()),
         error: (error, stack) => Center(child: Text(ListingStrings.error)),
         data: (items) => items.isEmpty
-            ? const EmptyState(
+            ? EmptyState(
                 icon: Icons.search_off,
                 title: ListingStrings.empty,
               )
             : ListView.separated(
                 itemCount: items.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                separatorBuilder: (_, _) => SizedBox(height: 12),
                 itemBuilder: (context, index) =>
                     ListingCard(listing: items[index],
                     trailing: FavoriteButton(
