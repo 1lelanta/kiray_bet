@@ -11,7 +11,7 @@ import '../providers/authentication_providers.dart';
 import '../providers/selected_language_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -48,22 +48,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text(AuthenticationStrings.loginTitle)),
+    appBar: AppBar(title: Text(AuthenticationStrings.loginTitle)),
     body: SafeArea(
       child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 440),
+            constraints: BoxConstraints(maxWidth: 440),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                    key: const Key(AuthenticationStrings.email),
+                    key: Key(AuthenticationStrings.email),
                     controller: _email,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.email,
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -73,11 +73,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       invalidMessage: AuthenticationStrings.invalidEmail,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   TextFormField(
-                    key: const Key(AuthenticationStrings.password),
+                    key: Key(AuthenticationStrings.password),
                     controller: _password,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.password,
                     ),
                     obscureText: true,
@@ -88,24 +88,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   if (_error != null) ...[
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text(
                       _error!,
-                      key: const Key('login-error'),
+                      key: Key('login-error'),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                   ],
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   FilledButton(
-                    key: const Key('login-submit'),
+                    key: Key('login-submit'),
                     onPressed: _signIn,
-                    child: const Text(AuthenticationStrings.signIn),
+                    child: Text(AuthenticationStrings.signIn),
                   ),
                   TextButton(
                     onPressed: () => context.go(RoutePaths.register),
-                    child: const Text(AuthenticationStrings.noAccount),
+                    child: Text(AuthenticationStrings.noAccount),
                   ),
                 ],
               ),
