@@ -1,6 +1,9 @@
 /// Stable route names used to identify application destinations.
 abstract final class RouteNames {
   static const onboarding = 'onboarding';
+  static const splash = 'splash-language';
+  static const login = 'login';
+  static const moderation = 'moderation';
   static const listings = 'listings';
   static const listingDetail = 'listing-detail';
   static const listingFilter = 'listing-filter';

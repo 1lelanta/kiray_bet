@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,7 +51,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   void _finishOnboarding() {
     ref.read(onboardingNotifierProvider.notifier).markSeen();
-    context.go(RoutePaths.listings);
+    context.go(RoutePaths.splash);
   }
 
   @override
