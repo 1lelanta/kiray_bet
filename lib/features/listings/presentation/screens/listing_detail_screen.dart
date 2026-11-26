@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../core/constants/route_names.dart';
-import '../../../../../core/formatters/birr_formatter.dart';
-import '../../../../../core/widgets/app_scaffold.dart';
-import '../../../../../core/widgets/error_view.dart';
-import '../../../../../core/widgets/loading_view.dart';
-import '../../../../../core/widgets/empty_state.dart';
+import '../../../../core/constants/route_names.dart';
+import '../../../../core/formatters/birr_formatter.dart';
+import '../../../../core/widgets/app_scaffold.dart';
+import '../../../../core/widgets/empty_state.dart';
+import '../../../../core/widgets/error_view.dart';
+import '../../../../core/widgets/loading_view.dart';
 import '../../domain/listing.dart';
 import '../listing_strings.dart';
 import '../providers/listing_data_providers.dart';
@@ -15,36 +15,34 @@ import '../providers/listing_providers.dart';
 
 class ListingDetailScreen extends ConsumerWidget {
   const ListingDetailScreen({super.key, required this.listingId});
-
   final String listingId;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final listing = ref.watch(listingByIdProvider(listingId));
+    final result = ref.watch(listingByIdProvider(listingId));
     return AppScaffold(
       title: ListingStrings.details,
-      body: listing.when(
+      body: result.when(
         loading: () => const LoadingView(),
         error: (error, stack) => const ErrorView(message: ListingStrings.error),
-        data: (item) => item == null
+        data: (listing) => listing == null
             ? const EmptyState(
                 icon: Icons.home_work_outlined,
                 title: ListingStrings.notFound,
               )
-            : _DetailsContent(listing: item),
+            : _Details(listing: listing),
       ),
     );
   }
 }
 
-class _DetailsContent extends ConsumerWidget {
-  const _DetailsContent({required this.listing});
+class _Details extends ConsumerWidget {
+  const _Details({required this.listing});
   final Listing listing;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = Localizations.localeOf(context).languageCode;
-    final userId = ref.watch(currentTenantIdProvider);
+    final userId =
+        ref.watch(currentTenantIdProvider) ?? ref.watch(currentOwnerIdProvider);
     final isOwner = ref.watch(currentOwnerIdProvider) == listing.ownerId;
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
@@ -66,7 +64,6 @@ class _DetailsContent extends ConsumerWidget {
         Text(
           '${listing.bedrooms} ${ListingStrings.bedroomCount} · ${listing.bathrooms} ${ListingStrings.bathroomCount} · ${listing.areaSqm} m²',
         ),
-        const SizedBox(height: 16),
         Text(
           ListingStrings.description,
           style: Theme.of(context).textTheme.titleMedium,
@@ -83,18 +80,14 @@ class _DetailsContent extends ConsumerWidget {
           ListingStrings.ownerContact,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const Text(ListingStrings.contactPlaceholder),
-        const SizedBox(height: 12),
+        const Text(ListingStrings.demoOwnerName),
+        const Text(ListingStrings.demoOwnerPhone),
         if (listing.status != ListingStatus.available)
-          Text(
-            listing.status.name,
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
+          Text(listing.status.name),
         OutlinedButton(
-          onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Viewing request flow is added in PR 4.'),
-            ),
+          onPressed: () => context.pushNamed(
+            RouteNames.requestViewing,
+            pathParameters: {'listingId': listing.id},
           ),
           child: const Text(ListingStrings.requestViewing),
         ),
@@ -106,7 +99,7 @@ class _DetailsContent extends ConsumerWidget {
             ),
             child: const Text(ListingStrings.report),
           ),
-        const SizedBox.shrink(), // Favourites action extension point.
+        const SizedBox.shrink(),
       ],
     );
   }
