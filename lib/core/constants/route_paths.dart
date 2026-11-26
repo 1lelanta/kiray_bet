@@ -19,13 +19,10 @@ abstract final class RoutePaths {
 
   static String listingDetailPath(String id) =>
       '/listings/${Uri.encodeComponent(id)}';
-
   static String listingEditPath(String id) =>
       '/listings/${Uri.encodeComponent(id)}/edit';
-
-  static String requestViewingPath(String id) =>
-      '/viewing-requests/${Uri.encodeComponent(id)}';
-
+  static String requestViewingPath(String listingId) =>
+      '/viewing-requests/${Uri.encodeComponent(listingId)}';
   static String reportPath(String listingId) =>
       '/report/${Uri.encodeComponent(listingId)}';
 }
