@@ -18,6 +18,8 @@ import '../../features/authentication/presentation/authentication_destination.da
 import '../../features/authentication/presentation/authentication_strings.dart';
 import '../../features/authentication/presentation/providers/authentication_providers.dart';
 import '../../features/authentication/presentation/screens/auth_feature_placeholder_screen.dart';
+import '../../features/authentication/presentation/screens/login_screen.dart';
+import '../../features/authentication/presentation/screens/registration_screen.dart';
 import '../../features/authentication/presentation/screens/splash_language_screen.dart';
 import '../../features/profile/presentation/screens/my_listings_screen.dart';
 import '../../features/profile/presentation/screens/post_listing_screen.dart';
@@ -81,10 +83,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RoutePaths.login,
         name: RouteNames.login,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const AuthFeaturePlaceholderScreen(
-          title: AuthenticationStrings.loginTitle,
-          message: AuthenticationStrings.loginUnavailable,
-        ),
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.register,
+        name: RouteNames.registration,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const RegistrationScreen(),
       ),
       GoRoute(
         path: RoutePaths.moderation,
