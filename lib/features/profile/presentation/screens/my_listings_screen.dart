@@ -12,7 +12,7 @@ import '../../../listings/presentation/providers/listing_data_providers.dart';
 import '../../../listings/presentation/providers/listing_providers.dart';
 
 class MyListingsScreen extends ConsumerWidget {
-  const MyListingsScreen({super.key});
+  MyListingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listings = ref.watch(currentOwnerListingsProvider);
@@ -20,14 +20,14 @@ class MyListingsScreen extends ConsumerWidget {
       title: ListingStrings.myListings,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push(RoutePaths.post),
-        icon: const Icon(Icons.add),
-        label: const Text(ListingStrings.add),
+        icon: Icon(Icons.add),
+        label: Text(ListingStrings.add),
       ),
       body: listings.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, s) => const Center(child: Text(ListingStrings.error)),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text(ListingStrings.error)),
         data: (items) => items.isEmpty
-            ? const EmptyState(
+            ? EmptyState(
                 icon: Icons.list_alt_outlined,
                 title: ListingStrings.noOwnerListings,
               )
@@ -61,7 +61,7 @@ class _OwnerListingTile extends ConsumerWidget {
           ref.invalidate(allListingsProvider);
           ref.invalidate(listingByIdProvider(listing.id));
         },
-        itemBuilder: (context) => const [
+        itemBuilder: (context) =>  [
           PopupMenuItem(
             value: ListingStatus.available,
             child: Text(ListingStrings.markAvailable),
