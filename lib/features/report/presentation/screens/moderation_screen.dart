@@ -13,7 +13,7 @@ import 'package:kiray_bet/features/report/presentation/moderation_strings.dart';
 import 'package:kiray_bet/features/report/presentation/providers/reports_providers.dart';
 
 class ModerationScreen extends ConsumerStatefulWidget {
-  const ModerationScreen({super.key});
+  ModerationScreen({super.key});
 
   @override
   ConsumerState<ModerationScreen> createState() =>
@@ -29,7 +29,7 @@ class _ModerationScreenState
     final user = ref.watch(currentUserProvider);
 
     if (user == null || user.role != UserRole.admin) {
-      return const AppScaffold(
+      return AppScaffold(
         title: ModerationStrings.title,
         body: EmptyState(
           icon: Icons.lock_outline,
@@ -49,7 +49,7 @@ class _ModerationScreenState
       body: Column(
         children: [
           SegmentedButton<bool>(
-            segments: const [
+            segments: [
               ButtonSegment<bool>(
                 value: false,
                 label: Text(ModerationStrings.open),
@@ -66,7 +66,7 @@ class _ModerationScreenState
               });
             },
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Expanded(
             child: filteredReports.isEmpty
                 ? EmptyState(
@@ -78,7 +78,7 @@ class _ModerationScreenState
                 : ListView.separated(
                     itemCount: filteredReports.length,
                     separatorBuilder: (_, _) =>
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       return ReportCard(
                         report: filteredReports[index],
@@ -93,7 +93,7 @@ class _ModerationScreenState
 }
 
 class ReportCard extends ConsumerWidget {
-  const ReportCard({
+  ReportCard({
     super.key,
     required this.report,
   });
@@ -121,7 +121,7 @@ class ReportCard extends ConsumerWidget {
       if (!context.mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(ModerationStrings.hideSuccess),
         ),
       );
@@ -129,7 +129,7 @@ class ReportCard extends ConsumerWidget {
       if (!context.mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(ModerationStrings.actionError),
         ),
       );
@@ -144,13 +144,13 @@ class ReportCard extends ConsumerWidget {
       ref.read(reportsProvider.notifier).resolve(report.id);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(ModerationStrings.resolveSuccess),
         ),
       );
     } catch (_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(ModerationStrings.actionError),
         ),
       );
@@ -167,15 +167,15 @@ class ReportCard extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: listing.when(
-          loading: () => const Center(
+          loading: () => Center(
             child: CircularProgressIndicator(),
           ),
-          error: (_, _) => const Text(
+          error: (_, _) => Text(
             ModerationStrings.listingNotFound,
           ),
           data: (item) {
             if (item == null) {
-              return const Text(
+              return Text(
                 ModerationStrings.listingNotFound,
               );
             }
@@ -187,7 +187,7 @@ class ReportCard extends ConsumerWidget {
                   item.title,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text('Listing ID: ${report.listingId}'),
                 Text('Reporter ID: ${report.reporterId}'),
                 Text('Reason: ${report.reason}'),
@@ -200,7 +200,7 @@ class ReportCard extends ConsumerWidget {
                       : ModerationStrings.open,
                 ),
                 if (!report.resolved) ...[
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -210,8 +210,8 @@ class ReportCard extends ConsumerWidget {
                           context,
                           ref,
                         ),
-                        icon: const Icon(Icons.visibility_off),
-                        label: const Text(
+                        icon: Icon(Icons.visibility_off),
+                        label: Text(
                           ModerationStrings.hideListing,
                         ),
                       ),
@@ -220,7 +220,7 @@ class ReportCard extends ConsumerWidget {
                           context,
                           ref,
                         ),
-                        child: const Text(
+                        child: Text(
                           ModerationStrings.resolveWithoutHiding,
                         ),
                       ),
