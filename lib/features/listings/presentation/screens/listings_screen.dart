@@ -1,17 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../../core/constants/route_names.dart';
 import '../../../../../core/widgets/app_scaffold.dart';
 import '../../../../../core/widgets/empty_state.dart';
+import '../listing_strings.dart';
+import '../providers/listing_providers.dart';
+import '../widgets/listing_card.dart';
 
-/// Placeholder for the rental listings screen.
-class ListingsScreen extends StatelessWidget {
+class ListingsScreen extends ConsumerWidget {
   const ListingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AppScaffold(
-      title: 'Listings',
-      body: EmptyState(icon: Icons.home_work_outlined, title: 'Listings'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listings = ref.watch(filteredListingsProvider);
+    final count = ref.watch(listingFilterProvider).activeCount;
+    return AppScaffold(
+      title: ListingStrings.browse,
+      actions: [
+        IconButton(
+          tooltip: ListingStrings.map,
+          onPressed: () => context.pushNamed(RouteNames.listingMap),
+          icon: const Icon(Icons.map_outlined),
+        ),
+        IconButton(
+          tooltip: ListingStrings.myListings,
+          onPressed: () => context.pushNamed(RouteNames.myListings),
+          icon: const Icon(Icons.list_alt_outlined),
+        ),
+        IconButton(
+          tooltip: ListingStrings.viewingRequests,
+          onPressed: () => context.pushNamed(RouteNames.viewingRequests),
+          icon: const Icon(Icons.event_note_outlined),
+        ),
+        IconButton(
+          tooltip: ListingStrings.filter,
+          onPressed: () => context.pushNamed(RouteNames.listingFilter),
+          icon: Badge(
+            label: Text('$count'),
+            isLabelVisible: count > 0,
+            child: const Icon(Icons.tune),
+          ),
+        ),
+      ],
+      body: listings.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text(ListingStrings.error)),
+        data: (items) => items.isEmpty
+            ? const EmptyState(
+                icon: Icons.search_off,
+                title: ListingStrings.empty,
+              )
+            : ListView.separated(
+                itemCount: items.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                itemBuilder: (context, index) =>
+                    ListingCard(listing: items[index]),
+              ),
+      ),
     );
   }
 }
