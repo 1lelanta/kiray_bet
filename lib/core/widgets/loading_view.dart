@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A centered loading indicator with optional context text.
 class LoadingView extends StatelessWidget {

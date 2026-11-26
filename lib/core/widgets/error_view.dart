@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A reusable view for displaying errors and an optional retry action.
 class ErrorView extends StatelessWidget {
