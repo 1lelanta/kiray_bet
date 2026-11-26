@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,6 +14,11 @@ import '../../features/listings/presentation/screens/viewing_requests_screen.dar
 import '../../features/onboarding/domain/onboarding_state.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
+import '../../features/authentication/presentation/authentication_destination.dart';
+import '../../features/authentication/presentation/authentication_strings.dart';
+import '../../features/authentication/presentation/providers/authentication_providers.dart';
+import '../../features/authentication/presentation/screens/auth_feature_placeholder_screen.dart';
+import '../../features/authentication/presentation/screens/splash_language_screen.dart';
 import '../../features/profile/presentation/screens/my_listings_screen.dart';
 import '../../features/profile/presentation/screens/post_listing_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
@@ -44,9 +49,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     refreshListenable: refreshNotifier,
     redirect: (context, state) {
       final seen = ref.read(onboardingNotifierProvider).hasSeenOnboarding;
+      final user = ref.read(currentUserProvider);
       final onboarding = state.uri.path == RoutePaths.onboarding;
       if (!seen && !onboarding) return RoutePaths.onboarding;
-      if (seen && onboarding) return RoutePaths.listings;
+      if (seen && onboarding) {
+        return user == null
+            ? RoutePaths.splash
+            : AuthenticationDestination.forRole(user.role);
+      }
+      if (state.uri.path == RoutePaths.splash && user != null) {
+        return AuthenticationDestination.forRole(user.role);
+      }
       return null;
     },
     errorBuilder: (context, state) =>
@@ -57,6 +70,30 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: RouteNames.onboarding,
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.splash,
+        name: RouteNames.splash,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const SplashLanguageScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.login,
+        name: RouteNames.login,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const AuthFeaturePlaceholderScreen(
+          title: AuthenticationStrings.loginTitle,
+          message: AuthenticationStrings.loginUnavailable,
+        ),
+      ),
+      GoRoute(
+        path: RoutePaths.moderation,
+        name: RouteNames.moderation,
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const AuthFeaturePlaceholderScreen(
+          title: AuthenticationStrings.moderationTitle,
+          message: AuthenticationStrings.moderationUnavailable,
+        ),
       ),
       GoRoute(
         path: RoutePaths.report,

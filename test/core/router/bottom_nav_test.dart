@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,14 +9,21 @@ import 'package:kiray_bet/features/listings/presentation/screens/listings_screen
 import 'package:kiray_bet/features/profile/presentation/screens/profile_screen.dart';
 import 'package:kiray_bet/features/onboarding/data/in_memory_onboarding_repository.dart';
 import 'package:kiray_bet/features/onboarding/presentation/providers/onboarding_providers.dart';
+import 'package:kiray_bet/features/authentication/data/in_memory_authentication_repository.dart';
+import 'package:kiray_bet/features/authentication/presentation/providers/authentication_providers.dart';
 
 void main() {
   testWidgets('bottom navigation switches primary branches', (
     WidgetTester tester,
   ) async {
+    final authenticationRepository = InMemoryAuthenticationRepository()
+      ..signIn(email: 'tenant@kiray.demo', password: 'Demo1234');
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          authenticationRepositoryProvider.overrideWithValue(
+            authenticationRepository,
+          ),
           onboardingRepositoryProvider.overrideWithValue(
             InMemoryOnboardingRepository(hasSeenOnboarding: true),
           ),

@@ -1,6 +1,9 @@
 /// Route path templates and helpers used by the application.
 abstract final class RoutePaths {
   static const onboarding = '/onboarding';
+  static const splash = '/welcome';
+  static const login = '/login';
+  static const moderation = '/moderation';
   static const listings = '/listings';
   static const listingDetail = '/listings/:id';
   static const listingFilter = '/listings/filter';
