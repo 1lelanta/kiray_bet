@@ -6,6 +6,7 @@ import '../../features/compare/presentation/screens/compare_result_screen.dart';
 import '../../features/compare/presentation/screens/compare_selection_screen.dart';
 import '../../features/favorites/presentation/screens/favorites_screen.dart';
 import '../../features/listings/presentation/screens/listing_detail_screen.dart';
+import '../../features/listings/presentation/screens/listing_filter_screen.dart';
 import '../../features/listings/presentation/screens/listings_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
@@ -59,8 +60,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RoutePaths.report,
         name: RouteNames.report,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) =>
-            ReportScamScreen(listingId: state.pathParameters['listingId']!),
+        builder: (context, state) => ReportScamScreen(
+          listingId: state.pathParameters['listingId'] ?? '',
+        ),
       ),
       GoRoute(
         path: RoutePaths.post,
@@ -70,9 +72,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state, navigationShell) {
-          return AppShell(navigationShell: navigationShell);
-        },
+        builder: (context, state, navigationShell) =>
+            AppShell(navigationShell: navigationShell),
         branches: [
           StatefulShellBranch(
             navigatorKey: _shellNavigatorKey,
@@ -83,11 +84,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) => const ListingsScreen(),
                 routes: [
                   GoRoute(
+                    path: 'filter',
+                    name: RouteNames.listingFilter,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const ListingFilterScreen(),
+                  ),
+                  GoRoute(
                     path: ':id',
                     name: RouteNames.listingDetail,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ListingDetailScreen(
-                      listingId: state.pathParameters['id']!,
+                      listingId: state.pathParameters['id'] ?? '',
                     ),
                   ),
                 ],
