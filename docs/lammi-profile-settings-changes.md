@@ -11,8 +11,8 @@ the existing shared code, and what is still needed from other developers.
 
 | Assignment | Source | Status in this PR |
 |---|---|---|
-| Profile | Team task list; `PROPOSAL.md` §5 "Profile and Settings" screen | Done, but not yet reachable in the running app (see integration 1) |
-| Settings | Team task list; `PROPOSAL.md` §5, §7 (theme, language preferences) | Done. Theme switching works in the running app. The screen itself isn't reachable yet (see integration 2) |
+| Profile | Team task list; `PROPOSAL.md` §5 "Profile and Settings" screen | Done. Shown on the Profile tab in the running app |
+| Settings | Team task list; `PROPOSAL.md` §5, §7 (theme, language preferences) | Done. Opens from the Profile tab at `/profile/settings`, and theme switching applies app-wide |
 | AI description generator | `PROPOSAL.md` §2 and §9; branch name | **Not in this PR** (scope decision). See "Other Lammi work" |
 | GPS and camera integration | `PROPOSAL.md` §2 | **Not in this PR**. See "Other Lammi work" |
 | Testing and release preparation | `PROPOSAL.md` §2 | Tests added for this PR's work. Release preparation still to do |
@@ -24,9 +24,10 @@ the existing shared code, and what is still needed from other developers.
   *"Placeholder. Lemmi replaces this with the real provider backed by
   settings. Keep the name themeModeProvider."* The name and the
   `Provider<ThemeMode>` type are unchanged, so `lib/app.dart` needed no edit.
-- **Not modified (owner did not authorize):** `profile_screen.dart` and
-  `settings_screen.dart` placeholders (Lelisa). The new screens live in new
-  files instead.
+- **Modified with approval:** the `profile_screen.dart` and
+  `settings_screen.dart` placeholders (Lelisa). Each placeholder body now
+  shows the matching new screen. The class names are unchanged, and Lelisa
+  has been notified.
 - **Not modified:** every other existing file, including the router,
   `app.dart`, the theme, shared widgets, the authentication feature, the
   listings feature, all `*Strings` classes, all generated files, `pubspec.yaml`,
@@ -47,6 +48,28 @@ the existing shared code, and what is still needed from other developers.
 - **Assignment:** Settings (theme).
 - **Interaction:** Reads `appSettingsProvider`. It's still read by
   `app.dart`, which uses the existing `AppTheme.light` / `AppTheme.dark`.
+- **Outstanding:** None.
+
+#### `lib/features/profile/presentation/screens/profile_screen.dart`
+- **Status:** Modified (Lelisa's placeholder, changed with approval).
+- **Purpose:** `ProfileScreen.build` now returns `const ProfileDetailsScreen()`
+  instead of the placeholder `AppScaffold` + `EmptyState`.
+- **Why necessary:** `app_router.dart` already sends `/profile` (the Profile
+  tab) to `ProfileScreen`. Wrapping the new screen here makes Profile
+  reachable without touching the router. It's the same pattern as
+  `PostListingScreen` → `ListingFormScreen`.
+- **Assignment:** Profile.
+- **Interaction:** The class name is kept, so `app_router.dart` and
+  `test/core/router/bottom_nav_test.dart` need no change.
+- **Outstanding:** None.
+
+#### `lib/features/profile/presentation/screens/settings_screen.dart`
+- **Status:** Modified (Lelisa's placeholder, changed with approval).
+- **Purpose:** `SettingsScreen.build` now returns `const AccountSettingsScreen()`.
+- **Why necessary:** `app_router.dart` already sends `/profile/settings` to
+  `SettingsScreen`.
+- **Assignment:** Settings.
+- **Interaction:** The class name is kept, so there's no router change.
 - **Outstanding:** None.
 
 ### Created — Profile (PR 1)
@@ -102,12 +125,11 @@ the existing shared code, and what is still needed from other developers.
     or an inline error afterwards.
   - Signed-out users see an `EmptyState` with a button that opens Login.
   - A settings icon opens `RoutePaths.settings`.
-- **Why necessary:** The Profile UI. It is a new file because
-  `profile_screen.dart` is Lelisa's placeholder.
+- **Why necessary:** The Profile UI, kept in its own file. The
+  `profile_screen.dart` placeholder wraps it.
 - **Interaction:** Uses `AppScaffold`, `EmptyState`, `currentUserProvider`,
   `profileUpdateProvider`, `RoutePaths.login` and `RoutePaths.settings`.
-- **Outstanding:** **Not reachable in the running app** until
-  `ProfileScreen` renders it (integration 1).
+- **Outstanding:** None. `ProfileScreen` renders it.
 
 ### Created — Settings (PR 2)
 
@@ -149,13 +171,12 @@ the existing shared code, and what is still needed from other developers.
   - **Sign out:** A confirmation dialog, then the existing
     `CurrentUserNotifier.signOut()`, then `context.go(RoutePaths.login)`.
     Signed-out users get a "Sign in" entry instead.
-- **Why necessary:** The Settings UI. It is a new file because
-  `settings_screen.dart` is Lelisa's placeholder.
+- **Why necessary:** The Settings UI, kept in its own file. The
+  `settings_screen.dart` placeholder wraps it.
 - **Interaction:** Reuses `AuthenticationStrings.language`, `.english`,
   `.amharic` and `.moderationTitle`, and `ListingStrings.myListings` and
   `.viewingRequests`. These are read only, not modified.
-- **Outstanding:** **Not reachable in the running app** until
-  `SettingsScreen` renders it (integration 2).
+- **Outstanding:** None. `SettingsScreen` renders it.
 
 ### Created — shared by both assignments
 
@@ -175,19 +196,22 @@ the existing shared code, and what is still needed from other developers.
 | File | Covers |
 |---|---|
 | `docs/lammi-profile-settings-changes.md` | This document |
-| `test/features/profile/profile_test_app.dart` | Test-only harness. Maps `/profile` and `/profile/settings` to the new screens, and every other route to the app's **existing** screens (Login, My Listings, Favorites, Viewing Requests, Moderation placeholder). Applies `themeModeProvider` the same way `app.dart` does |
+| `test/features/profile/profile_test_app.dart` | Test-only harness for focused screen tests. Maps `/profile` and `/profile/settings` to the new screens, and every other route to the app's **existing** screens (Login, My Listings, Favorites, Viewing Requests, Moderation placeholder). Applies `themeModeProvider` the same way `app.dart` does |
 | `test/features/profile/profile_repository_test.dart` | Delegation, trimming, email/role/language preserved, signed-out failure |
 | `test/features/profile/profile_providers_test.dart` | Loading → success, shared `currentUserProvider` update, language kept, signed-out error state |
 | `test/features/profile/app_settings_provider_test.dart` | Defaults, theme mapping, notifications toggle, and that the **real** `KirayBetApp` switches to dark |
 | `test/features/profile/profile_details_screen_test.dart` | Signed-out prompt, displayed fields, read-only email/role, validation, successful save, loading and error UI, settings link |
 | `test/features/profile/account_settings_screen_test.dart` | Theme, language (shared provider plus profile), notifications, sign-out with confirm and cancel, shortcuts for owner, tenant, admin and signed-out users |
+| `test/features/profile/profile_navigation_test.dart` | The **real** `KirayBetApp` and router: the Profile tab shows the profile, the settings icon opens Settings, and sign-out returns to Login |
 
-## Integration requirements (not done — recommendations only)
+## Integration requirements
+
+Items 1 and 2 are done in this PR. The rest are recommendations only.
 
 | # | Developer | File | Existing implementation | Required change | Essential? |
 |---|---|---|---|---|---|
-| 1 | Lelisa Tesfaye (`1lelanta`) | `lib/features/profile/presentation/screens/profile_screen.dart` | `ProfileScreen`, a placeholder `StatelessWidget` returning `AppScaffold` + `EmptyState` | Make `build` return `const ProfileDetailsScreen()` and import `profile_details_screen.dart`. This is the same wrapper pattern as `PostListingScreen` → `ListingFormScreen`. Keeping the class name means `app_router.dart` and `test/core/router/bottom_nav_test.dart` need no change | **Essential.** Without it the Profile tab still shows the placeholder |
-| 2 | Lelisa Tesfaye (`1lelanta`) | `lib/features/profile/presentation/screens/settings_screen.dart` | `SettingsScreen` placeholder | Make `build` return `const AccountSettingsScreen()` and import `account_settings_screen.dart` | **Essential.** Without it `/profile/settings` shows the placeholder |
+| 1 | Lelisa Tesfaye (`1lelanta`) | `lib/features/profile/presentation/screens/profile_screen.dart` | `ProfileScreen`, a placeholder `StatelessWidget` returning `AppScaffold` + `EmptyState` | `build` returns `const ProfileDetailsScreen()`. This is the same wrapper pattern as `PostListingScreen` → `ListingFormScreen`, and the class name is kept | **Done in this PR**, with approval |
+| 2 | Lelisa Tesfaye (`1lelanta`) | `lib/features/profile/presentation/screens/settings_screen.dart` | `SettingsScreen` placeholder | `build` returns `const AccountSettingsScreen()` | **Done in this PR**, with approval |
 | 3 | Lelisa Tesfaye (`1lelanta`) | `lib/core/router/app_router.dart` | `refreshListenable` only listens to `onboardingNotifierProvider`, and the redirect doesn't guard shell routes for signed-out users | Optionally also `ref.listen(currentUserProvider, …)` to refresh the router, and redirect signed-out users away from `/profile/**` | Optional. Settings already navigates to Login after sign-out, and both screens handle a signed-out user |
 | 4 | Natnael Girmay | Localization (no files yet) | English-only `*Strings` constant classes. `selectedLanguageProvider` stores `'en'` or `'am'`, but UI text doesn't change | When the project's Amharic/English localization lands, move the `ProfileStrings` keys into it. The keys map 1:1 | Optional for this PR. Needed for the project's Amharic UI goal |
 | 5 | Natnael Girmay | Branch `origin/refactor/flutter-material` | Replaces `package:material_ui` imports with `package:flutter/material.dart` across the project | Whichever PR merges second should switch the `material_ui` import in this PR's screens, `theme_mode_provider.dart` and profile tests to `flutter/material.dart` | Optional coordination. Expect a small import conflict |
@@ -224,6 +248,5 @@ Notes on shortcut targets, where no change is needed:
 - Changing the language updates shared state and the user's
   `preferredLanguage`, but UI text stays English until project-wide
   localization exists (integration 4).
-- Profile and Settings are reachable in the app only after integrations 1
-  and 2. Until then they are exercised through the test harness, while
-  theme switching already works in the real app.
+- Favorites and Moderation shortcuts open the current placeholder screens
+  until those features land.

@@ -19,11 +19,12 @@ import 'package:kiray_bet/features/profile/presentation/screens/profile_details_
 
 const demoPassword = InMemoryAuthenticationRepository.demoPassword;
 
-/// Pumps the new Profile and Settings screens inside a test-only router.
+/// Pumps the Profile and Settings screens inside a small test-only router.
 ///
-/// The real `app_router.dart` still points `/profile` and `/profile/settings`
-/// at the placeholder screens, so this router maps the same paths to the new
-/// screens. All other destinations are the app's existing screens, unchanged.
+/// Used for focused screen tests. The router maps `/profile` and
+/// `/profile/settings` to the screens directly, and every other destination
+/// to the app's existing screens. `profile_navigation_test.dart` covers the
+/// real app router.
 Future<ProviderContainer> pumpProfileTestApp(
   WidgetTester tester, {
   required String initialLocation,
