@@ -4,14 +4,12 @@
 
 | Member | Tool | Version / model | Used for |
 |---|---|---|---|
-| Miruts Gebremeskel | Codex | Not recorded | Explanations, debugging suggestions, and implementation guidance for listing features: model/repository, browse, details, listing management, and viewing requests. |
-| Lammi Abraham | Antigravity | Not recorded | Explanations, debugging suggestions, and implementation guidance for authentication: accounts, shared authentication and language state, login, and registration. |
-| Lelisa Tesfaye | GitHub Copilot | Not recorded | Explanations, debugging suggestions, and implementation guidance for the project skeleton, core structure, router, shell, and route guards. |
-| Lelisa Tesfaye | Claude | Not recorded | Drafting milestone/disclosure documentation and preparing repository-audit prompts. |
-| Natnael Girmay | ChatGPT | Not recorded | Explanations, debugging suggestions, and implementation guidance for favourites, reports, localization, and the Flutter Material refactor. |
-| Molalign Michael | Claude | Not recorded | Explanations, debugging suggestions, and implementation guidance for profile and settings features. |
+| Miruts Gebremeskel | Codex | 6.0 luna| Explanations, debugging suggestions, and implementation guidance for listing features: model/repository, browse, details, listing management, and viewing requests. |
+| Lammi Abraham | Antigravity |gemini flash 3.8| Explanations, debugging suggestions, and implementation guidance for authentication: accounts, shared authentication and language state, login, and registration. |
+| Lelisa Tesfaye | GitHub Copilot |gpt 6| Explanations, debugging suggestions, and implementation guidance for the project skeleton, core structure, router, shell, and route guards. |
+| Natnael Girmay | ChatGPT | 6 | Explanations, debugging suggestions, and implementation guidance for favourites, reports, localization, and the Flutter Material refactor. |
+| Molalign Michael | Claude |Opus 5.5| Explanations, debugging suggestions, and implementation guidance for profile and settings features. |
 
-The exact model or product version was not recorded. AI suggestions were treated as assistance, not as authoritative output; team members remain responsible for the submitted code and claims.
 
 ## What was generated and where
 
