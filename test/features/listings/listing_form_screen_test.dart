@@ -173,7 +173,7 @@ void main() {
             (ref) => InMemoryListingRepository(),
           ),
         ],
-        child: MaterialApp(home: ListingFormScreen(listingId: 'bole-02')),
+        child:  MaterialApp(home: ListingFormScreen(listingId: 'bole-02')),
       ),
     );
     await tester.pumpAndSettle();
