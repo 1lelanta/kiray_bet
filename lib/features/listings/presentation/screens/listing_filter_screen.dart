@@ -9,7 +9,7 @@ import '../listing_strings.dart';
 import '../providers/listing_providers.dart';
 
 class ListingFilterScreen extends ConsumerStatefulWidget {
-  ListingFilterScreen({super.key});
+  const ListingFilterScreen({super.key});
 
   @override
   ConsumerState<ListingFilterScreen> createState() =>

@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -83,7 +83,7 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
-        const SnackBar(
+        SnackBar(
           key: Key('profile-saved'),
           content: Text(ProfileStrings.updateSuccess),
         ),
@@ -130,9 +130,9 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
           key: const Key('profile-email'),
           initialValue: user.email,
           readOnly: true,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: AuthenticationStrings.email,
-            suffixIcon: Icon(Icons.lock_outline),
+            suffixIcon: const Icon(Icons.lock_outline),
           ),
         ),
         const SizedBox(height: 16),
@@ -140,9 +140,9 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
           key: const Key('profile-role'),
           initialValue: _roleLabel(user.role),
           readOnly: true,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: ProfileStrings.role,
-            suffixIcon: Icon(Icons.lock_outline),
+            suffixIcon: const Icon(Icons.lock_outline),
           ),
         ),
         const SizedBox(height: 8),
@@ -160,7 +160,7 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
                 controller: _name,
                 enabled: !update.isLoading,
                 textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: AuthenticationStrings.name,
                 ),
                 validator: (value) => FormValidators.name(
@@ -174,7 +174,7 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
                 controller: _phone,
                 enabled: !update.isLoading,
                 keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: AuthenticationStrings.phone,
                 ),
                 validator: (value) => FormValidators.phone(
@@ -199,7 +199,7 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
           key: const Key('profile-save'),
           onPressed: update.isLoading ? null : _save,
           child: update.isLoading
-              ? const Row(
+              ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox.square(
@@ -210,7 +210,7 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
                     Text(ProfileStrings.saving),
                   ],
                 )
-              : const Text(ProfileStrings.saveChanges),
+              : Text(ProfileStrings.saveChanges),
         ),
       ],
     );

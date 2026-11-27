@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kiray_bet/core/constants/route_paths.dart';
 import 'package:kiray_bet/features/authentication/domain/user_profile.dart';

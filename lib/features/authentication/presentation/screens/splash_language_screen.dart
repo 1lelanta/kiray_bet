@@ -9,7 +9,7 @@ import '../providers/authentication_providers.dart';
 import '../providers/selected_language_provider.dart';
 
 class SplashLanguageScreen extends ConsumerWidget {
-  SplashLanguageScreen({super.key});
+  const SplashLanguageScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

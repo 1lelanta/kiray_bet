@@ -1,4 +1,6 @@
 import '../../../core/localization/l10n.dart';
+import '../domain/listing.dart';
+import '../domain/viewing_request.dart';
 
 abstract final class ListingStrings {
   static String get browse => L10n.text('listing.browse', "Browse rentals");
@@ -54,6 +56,25 @@ abstract final class ListingStrings {
   static String get add => L10n.text('listing.add', "Add");
   static String get markAvailable => L10n.text('listing.markAvailable', "Mark available");
   static String get markRented => L10n.text('listing.markRented', "Mark rented");
+  static String get statusAvailable => L10n.text('listing.statusAvailable', "Available");
+  static String get statusRented => L10n.text('listing.statusRented', "Rented");
+  static String get statusHidden => L10n.text('listing.statusHidden', "Hidden");
+  static String listingStatusLabel(ListingStatus status) => switch (status) {
+    ListingStatus.available => statusAvailable,
+    ListingStatus.rented => statusRented,
+    ListingStatus.hidden => statusHidden,
+  };
+  static String get requestPending => L10n.text('listing.requestPending', "Pending");
+  static String get requestAccepted => L10n.text('listing.requestAccepted', "Accepted");
+  static String get requestDeclined => L10n.text('listing.requestDeclined', "Declined");
+  static String get requestCancelled => L10n.text('listing.requestCancelled', "Cancelled");
+  static String viewingRequestStatusLabel(ViewingRequestStatus status) =>
+      switch (status) {
+        ViewingRequestStatus.pending => requestPending,
+        ViewingRequestStatus.accepted => requestAccepted,
+        ViewingRequestStatus.declined => requestDeclined,
+        ViewingRequestStatus.cancelled => requestCancelled,
+      };
   static String get latitude => L10n.text('listing.latitude', "Latitude");
   static String get longitude => L10n.text('listing.longitude', "Longitude");
   static String get coordinateError => L10n.text('listing.coordinateError', "Choose coordinates within Addis Ababa.");
@@ -73,4 +94,5 @@ abstract final class ListingStrings {
   static String get decline => L10n.text('listing.decline', "Decline");
   static String get futureDateRequired => L10n.text('listing.futureDateRequired', "Choose a date and time in the future.");
   static String get requestUnavailable => L10n.text('listing.requestUnavailable', "Viewing requests are only available for listings you do not own that are available.");
+  static String get navListings => L10n.text('listing.navListings', "Listings");
 }

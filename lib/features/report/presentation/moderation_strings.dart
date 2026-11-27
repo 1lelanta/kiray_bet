@@ -14,4 +14,8 @@ abstract final class ModerationStrings {
   static String get hideSuccess => L10n.text('moderation.hideSuccess', "Listing hidden and report resolved.");
   static String get resolveSuccess => L10n.text('moderation.resolveSuccess', "Report resolved.");
   static String get actionError => L10n.text('moderation.actionError', "Could not complete this action.");
+  static String get listingIdLabel => L10n.text('moderation.listingIdLabel', "Listing ID");
+  static String get reporterIdLabel => L10n.text('moderation.reporterIdLabel', "Reporter ID");
+  static String get reasonLabel => L10n.text('moderation.reasonLabel', "Reason");
+  static String get submittedLabel => L10n.text('moderation.submittedLabel', "Submitted");
 }

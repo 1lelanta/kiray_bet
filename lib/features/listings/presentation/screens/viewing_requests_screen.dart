@@ -10,7 +10,7 @@ import '../providers/listing_providers.dart';
 import '../providers/viewing_request_providers.dart';
 
 class ViewingRequestsScreen extends ConsumerWidget {
-  ViewingRequestsScreen({super.key, this.listingId});
+  const ViewingRequestsScreen({super.key, this.listingId});
   final String? listingId;
 
   @override
@@ -43,7 +43,9 @@ class ViewingRequestsScreen extends ConsumerWidget {
                             ),
                             child: Text(ListingStrings.cancel),
                           )
-                        : Text(item.status.name),
+                        : Text(
+                            ListingStrings.viewingRequestStatusLabel(item.status),
+                          ),
                   ),
             loading: () => LinearProgressIndicator(),
             error: (e, s) => Text(ListingStrings.error),
@@ -75,7 +77,9 @@ class ViewingRequestsScreen extends ConsumerWidget {
                               ),
                             ],
                           )
-                        : Text(item.status.name),
+                        : Text(
+                            ListingStrings.viewingRequestStatusLabel(item.status),
+                          ),
                   ),
             loading: () => LinearProgressIndicator(),
             error: (e, s) => Text(ListingStrings.error),
@@ -100,7 +104,10 @@ class ViewingRequestsScreen extends ConsumerWidget {
         (item) => Card(
           child: ListTile(
             title: Text('${item.listingId} · ${item.proposedDateTime}'),
-            subtitle: Text(item.message ?? item.status.name),
+            subtitle: Text(
+              item.message ??
+                  ListingStrings.viewingRequestStatusLabel(item.status),
+            ),
             trailing: action(item),
           ),
         ),

@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,25 +29,25 @@ class AccountSettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
-          const _SectionHeader(SettingsStrings.appearance),
+          _SectionHeader(SettingsStrings.appearance),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SegmentedButton<AppThemePreference>(
               key: const Key('settings-theme'),
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: AppThemePreference.system,
-                  icon: Icon(Icons.brightness_auto_outlined),
+                  icon: const Icon(Icons.brightness_auto_outlined),
                   label: Text(SettingsStrings.themeSystem),
                 ),
                 ButtonSegment(
                   value: AppThemePreference.light,
-                  icon: Icon(Icons.light_mode_outlined),
+                  icon: const Icon(Icons.light_mode_outlined),
                   label: Text(SettingsStrings.themeLight),
                 ),
                 ButtonSegment(
                   value: AppThemePreference.dark,
-                  icon: Icon(Icons.dark_mode_outlined),
+                  icon: const Icon(Icons.dark_mode_outlined),
                   label: Text(SettingsStrings.themeDark),
                 ),
               ],
@@ -57,18 +57,18 @@ class AccountSettingsScreen extends ConsumerWidget {
                   .setThemePreference(selection.first),
             ),
           ),
-          const _SectionHeader(AuthenticationStrings.language),
+          _SectionHeader(AuthenticationStrings.language),
           ListTile(
             key: const Key('settings-current-language'),
             leading: const Icon(Icons.translate),
-            title: const Text(SettingsStrings.currentLanguage),
+            title: Text(SettingsStrings.currentLanguage),
             trailing: Text(_languageName(language)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SegmentedButton<String>(
               key: const Key('settings-language'),
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: 'en',
                   label: Text(AuthenticationStrings.english),
@@ -84,27 +84,27 @@ class AccountSettingsScreen extends ConsumerWidget {
                   .setLanguage(selection.first),
             ),
           ),
-          const _SectionHeader(SettingsStrings.notifications),
+          _SectionHeader(SettingsStrings.notifications),
           SwitchListTile(
             key: const Key('settings-notifications'),
             secondary: const Icon(Icons.notifications_outlined),
-            title: const Text(SettingsStrings.notifications),
-            subtitle: const Text(SettingsStrings.notificationsHint),
+            title: Text(SettingsStrings.notifications),
+            subtitle: Text(SettingsStrings.notificationsHint),
             value: settings.notificationsEnabled,
             onChanged: (enabled) => ref
                 .read(appSettingsProvider.notifier)
                 .setNotificationsEnabled(enabled),
           ),
           if (user != null) ...[
-            const _SectionHeader(SettingsStrings.shortcuts),
+            _SectionHeader(SettingsStrings.shortcuts),
             ..._roleShortcuts(context, user.role),
           ],
-          const _SectionHeader(SettingsStrings.account),
+          _SectionHeader(SettingsStrings.account),
           if (user == null)
             ListTile(
               key: const Key('settings-sign-in'),
               leading: const Icon(Icons.login),
-              title: const Text(AuthenticationStrings.signIn),
+              title: Text(AuthenticationStrings.signIn),
               onTap: () => context.go(RoutePaths.login),
             )
           else
@@ -133,7 +133,7 @@ List<Widget> _roleShortcuts(BuildContext context, UserRole role) =>
         ListTile(
           key: const Key('settings-my-listings'),
           leading: const Icon(Icons.home_work_outlined),
-          title: const Text(ListingStrings.myListings),
+          title: Text(ListingStrings.myListings),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => context.go(RoutePaths.myListings),
         ),
@@ -142,14 +142,14 @@ List<Widget> _roleShortcuts(BuildContext context, UserRole role) =>
         ListTile(
           key: const Key('settings-favorites'),
           leading: const Icon(Icons.favorite_border),
-          title: const Text(SettingsStrings.favorites),
+          title: Text(SettingsStrings.favorites),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => context.go(RoutePaths.favorites),
         ),
         ListTile(
           key: const Key('settings-viewing-requests'),
           leading: const Icon(Icons.event_note_outlined),
-          title: const Text(ListingStrings.viewingRequests),
+          title: Text(ListingStrings.viewingRequests),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => context.push(RoutePaths.viewingRequests),
         ),
@@ -158,7 +158,7 @@ List<Widget> _roleShortcuts(BuildContext context, UserRole role) =>
         ListTile(
           key: const Key('settings-moderation'),
           leading: const Icon(Icons.shield_outlined),
-          title: const Text(AuthenticationStrings.moderationTitle),
+          title: Text(AuthenticationStrings.moderationTitle),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => context.push(RoutePaths.moderation),
         ),
@@ -169,17 +169,17 @@ Future<void> _confirmSignOut(BuildContext context, WidgetRef ref) async {
   final confirmed = await showDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
-      title: const Text(SettingsStrings.signOutConfirmTitle),
-      content: const Text(SettingsStrings.signOutConfirmMessage),
+      title: Text(SettingsStrings.signOutConfirmTitle),
+      content: Text(SettingsStrings.signOutConfirmMessage),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(dialogContext).pop(false),
-          child: const Text(SettingsStrings.cancel),
+          child: Text(SettingsStrings.cancel),
         ),
         FilledButton(
           key: const Key('settings-sign-out-confirm'),
           onPressed: () => Navigator.of(dialogContext).pop(true),
-          child: const Text(SettingsStrings.signOut),
+          child: Text(SettingsStrings.signOut),
         ),
       ],
     ),

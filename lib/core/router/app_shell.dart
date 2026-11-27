@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kiray_bet/features/compare/presentation/compare_strings.dart';
+import 'package:kiray_bet/features/favorites/presentation/favorites_strings.dart';
+import 'package:kiray_bet/features/listings/presentation/listing_strings.dart';
+import 'package:kiray_bet/features/profile/presentation/profile_strings.dart';
 
 /// A Material 3 bottom navigation shell for the primary app branches.
 class AppShell extends StatelessWidget {
@@ -19,25 +23,25 @@ class AppShell extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_work_outlined),
-            selectedIcon: Icon(Icons.home_work),
-            label: 'Listings',
+            icon: const Icon(Icons.home_work_outlined),
+            selectedIcon: const Icon(Icons.home_work),
+            label: ListingStrings.navListings,
           ),
           NavigationDestination(
-            icon: Icon(Icons.compare_arrows),
-            label: 'Compare',
+            icon: const Icon(Icons.compare_arrows),
+            label: CompareStrings.title,
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_border),
-            selectedIcon: Icon(Icons.favorite),
-            label: 'Favorites',
+            icon: const Icon(Icons.favorite_border),
+            selectedIcon: const Icon(Icons.favorite),
+            label: FavoritesStrings.title,
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            icon: const Icon(Icons.person_outline),
+            selectedIcon: const Icon(Icons.person),
+            label: ProfileStrings.profileTitle,
           ),
         ],
       ),

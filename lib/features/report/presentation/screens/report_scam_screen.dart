@@ -9,20 +9,15 @@ import 'package:kiray_bet/features/report/presentation/providers/reports_provide
 import 'package:kiray_bet/features/report/presentation/report_strings.dart';
 
 class ReportScamScreen extends ConsumerStatefulWidget {
-  ReportScamScreen({
-    super.key,
-    required this.listingId,
-  });
+  const ReportScamScreen({super.key, required this.listingId});
 
   final String listingId;
 
   @override
-  ConsumerState<ReportScamScreen> createState() =>
-      _ReportScamScreenState();
+  ConsumerState<ReportScamScreen> createState() => _ReportScamScreenState();
 }
 
-class _ReportScamScreenState
-    extends ConsumerState<ReportScamScreen> {
+class _ReportScamScreenState extends ConsumerState<ReportScamScreen> {
   final _formKey = GlobalKey<FormState>();
   final _detailsController = TextEditingController();
 
@@ -48,11 +43,8 @@ class _ReportScamScreenState
   Future<void> _submitReport() async {
     if (_selectedReason == null) {
       setState(() {});
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(ReportStrings.reasonRequired),
-        ),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(ReportStrings.reasonRequired)));
       return;
     }
 
@@ -69,10 +61,9 @@ class _ReportScamScreenState
         reason = '$reason: ${_detailsController.text.trim()}';
       }
 
-      ref.read(reportsProvider.notifier).submit(
-            listingId: widget.listingId,
-            reason: reason,
-          );
+      ref
+          .read(reportsProvider.notifier)
+          .submit(listingId: widget.listingId, reason: reason);
 
       if (!mounted) return;
 
@@ -89,18 +80,15 @@ class _ReportScamScreenState
           ? error.message.toString()
           : ReportStrings.error;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(currentUserProvider);
-    final listing = ref.watch(
-      listingByIdProvider(widget.listingId),
-    );
+    final listing = ref.watch(listingByIdProvider(widget.listingId));
 
     if (user == null) {
       return AppScaffold(
@@ -115,17 +103,11 @@ class _ReportScamScreenState
     return AppScaffold(
       title: ReportStrings.title,
       body: listing.when(
-        loading: () => Center(
-          child: CircularProgressIndicator(),
-        ),
-        error: (_, _) => Center(
-          child: Text(ReportStrings.listingNotFound),
-        ),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (_, _) => Center(child: Text(ReportStrings.listingNotFound)),
         data: (item) {
           if (item == null) {
-            return Center(
-              child: Text(ReportStrings.listingNotFound),
-            );
+            return Center(child: Text(ReportStrings.listingNotFound));
           }
 
           if (_submitted) {
@@ -139,10 +121,7 @@ class _ReportScamScreenState
                     color: Colors.green,
                   ),
                   SizedBox(height: 16),
-                  Text(
-                    ReportStrings.success,
-                    textAlign: TextAlign.center,
-                  ),
+                  Text(ReportStrings.success, textAlign: TextAlign.center),
                 ],
               ),
             );
@@ -153,7 +132,7 @@ class _ReportScamScreenState
             child: ListView(
               children: [
                 Text(
-                  'Listing: ${item.title}',
+                  '${ReportStrings.listingLabel}: ${item.title}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 20),
@@ -163,18 +142,24 @@ class _ReportScamScreenState
                 ),
                 SizedBox(height: 8),
 
-                ..._reasons.map(
-                  (reason) => RadioListTile<String>(
-                    title: Text(reason),
-                    value: reason,
-                    groupValue: _selectedReason,
-                    onChanged: _isSubmitting
-                        ? null
-                        : (value) {
-                            setState(() {
-                              _selectedReason = value;
-                            });
-                          },
+                RadioGroup<String>(
+                  groupValue: _selectedReason,
+                  onChanged: (value) {
+                    if (_isSubmitting) return;
+                    setState(() {
+                      _selectedReason = value;
+                    });
+                  },
+                  child: Column(
+                    children: [
+                      ..._reasons.map(
+                        (reason) => RadioListTile<String>(
+                          title: Text(reason),
+                          value: reason,
+                          enabled: !_isSubmitting,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 

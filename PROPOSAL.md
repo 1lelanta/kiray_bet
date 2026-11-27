@@ -100,6 +100,7 @@ ViewingRequest: id, listingId, tenantId, ownerId, proposedDateTime, message, sta
 Report: id, listingId, reporterId, reason, createdAt, resolved
 
 AreaStat: subCity, neighbourhood, bedrooms, averageRentBirr, sampleCount, updatedAt
+```
 
 ## 8. Data sources
 

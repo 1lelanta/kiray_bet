@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kiray_bet/features/authentication/presentation/providers/authentication_providers.dart';
+import 'package:kiray_bet/features/favorites/presentation/favorites_strings.dart';
 
 import '../providers/favorites_providers.dart';
 
@@ -26,8 +27,8 @@ class FavoriteButton extends ConsumerWidget {
 
     return IconButton(
       tooltip: isFavorite
-          ? 'Remove from favorites'
-          : 'Add to favorites',
+          ? FavoritesStrings.removeTooltip
+          : FavoritesStrings.addTooltip,
       onPressed: () {
         ref.read(favoritesProvider.notifier).toggle(listingId);
       },

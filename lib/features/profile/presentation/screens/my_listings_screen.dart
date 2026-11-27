@@ -12,7 +12,7 @@ import '../../../listings/presentation/providers/listing_data_providers.dart';
 import '../../../listings/presentation/providers/listing_providers.dart';
 
 class MyListingsScreen extends ConsumerWidget {
-  MyListingsScreen({super.key});
+  const MyListingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listings = ref.watch(currentOwnerListingsProvider);
@@ -49,7 +49,7 @@ class _OwnerListingTile extends ConsumerWidget {
     child: ListTile(
       title: Text(listing.title),
       subtitle: Text(
-        '${listing.status.name} · ${formatBirr(listing.monthlyRentBirr, Localizations.localeOf(context).languageCode)}',
+        '${ListingStrings.listingStatusLabel(listing.status)} · ${formatBirr(listing.monthlyRentBirr, Localizations.localeOf(context).languageCode)}',
       ),
       onTap: () => context.push(RoutePaths.listingEditPath(listing.id)),
       trailing: PopupMenuButton<ListingStatus>(
