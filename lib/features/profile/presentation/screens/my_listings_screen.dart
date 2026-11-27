@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/route_paths.dart';
 import '../../../../core/formatters/birr_formatter.dart';
+import '../../../../core/localization/l10n.dart';
 import '../../../../core/widgets/app_scaffold.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../listings/domain/listing.dart';
@@ -47,7 +48,7 @@ class _OwnerListingTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) => Card(
     child: ListTile(
-      title: Text(listing.title),
+      title: Text(L10n.localizedListingTitle(listing)),
       subtitle: Text(
         '${ListingStrings.listingStatusLabel(listing.status)} · ${formatBirr(listing.monthlyRentBirr, Localizations.localeOf(context).languageCode)}',
       ),

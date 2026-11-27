@@ -50,7 +50,7 @@ abstract final class ListingStrings {
   static String get invalidNumber => L10n.text('listing.invalidNumber', "Enter a valid non-negative number.");
   static String get photoRequired => L10n.text('listing.photoRequired', "Add at least one photo placeholder.");
   static String get signInRequired => L10n.text('listing.signInRequired', "Sign in is required for this action.");
-  static List<String> get subCities => L10n.list('listing.subCities', ["Bole", "Yeka", "Kirkos", "Lideta", "Arada", "Nifas Silk-Lafto", "Kolfe Keranio", "Gullele"]);
+  static List<String> get subCities => L10n.list('listing.subCities', L10n.englishSubCities);
   static String get myListings => L10n.text('listing.myListings', "My listings");
   static String get noOwnerListings => L10n.text('listing.noOwnerListings', "You have not posted any listings yet.");
   static String get add => L10n.text('listing.add', "Add");

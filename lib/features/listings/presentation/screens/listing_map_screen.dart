@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/route_paths.dart';
+import '../../../../core/localization/l10n.dart';
 import '../../../../core/widgets/app_scaffold.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../domain/listing.dart';
@@ -42,8 +43,11 @@ class _ListingMapScreenState extends ConsumerState<ListingMapScreen> {
                     value: null,
                     child: Text(ListingStrings.any),
                   ),
-                  ...ListingStrings.subCities.map(
-                    (v) => DropdownMenuItem(value: v, child: Text(v)),
+                  ...L10n.englishSubCities.map(
+                    (v) => DropdownMenuItem(
+                      value: v,
+                      child: Text(L10n.localizedSubCity(v)),
+                    ),
                   ),
                 ],
                 onChanged: (v) => setState(() => _area = v),

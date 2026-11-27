@@ -1,6 +1,87 @@
+import '../../features/listings/domain/listing.dart';
+
 class L10n {
   L10n._();
   static String languageCode = 'en';
+  static const List<String> englishSubCities = [
+    'Bole',
+    'Yeka',
+    'Kirkos',
+    'Lideta',
+    'Arada',
+    'Nifas Silk-Lafto',
+    'Kolfe Keranio',
+    'Gullele',
+  ];
+  static const List<String> _subCitiesAmharic = [
+    'ቦሌ',
+    'የካ',
+    'ቂርቆስ',
+    'ልደታ',
+    'አራዳ',
+    'ንፋስ ስልክ ላፍቶ',
+    'ኮልፌ ቀራንዮ',
+    'ጉለሌ',
+  ];
+  static const Map<String, String> _amNeighbourhoods = {
+    'Bole Atlas': 'ቦሌ አትላስ',
+    'Old Airport': 'ኦልድ ኤርፖርት',
+    'Megenagna': 'መገናኛ',
+    'Kotebe': 'ኮተቤ',
+    'Kazanchis': 'ካዛንቺስ',
+    'Mexico': 'ሜክሲኮ',
+    'Lideta': 'ልደታ',
+    'Piassa': 'ፒያሳ',
+    'Arat Kilo': 'አራት ኪሎ',
+    'Lafto': 'ላፍቶ',
+    'Jemo': 'ጀሞ',
+    'Tegbare-id': 'ተገባር እድ',
+    'Kolfe': 'ኮልፌ',
+    'Alem Bank': 'አለም ባንክ',
+    'Entoto': 'እንጦጦ',
+    'Gerji': 'ገርጂ',
+    'Shola': 'ሾላ',
+  };
+  static const Map<String, String> _amListingTitles = {
+    'bole-01': 'በቦሌ አትላስ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'bole-02': 'በኦልድ ኤርፖርት የሚገኝ 3 መኝታ ክፍል ያለው ቤት',
+    'yeka-01': 'በመገናኛ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'yeka-02': 'በኮተቤ የሚገኝ 1 መኝታ ክፍል ያለው ቤት',
+    'kirkos-01': 'በካዛንቺስ የሚገኝ 3 መኝታ ክፍል ያለው ቤት',
+    'kirkos-02': 'በሜክሲኮ የሚገኝ 1 መኝታ ክፍል ያለው ቤት',
+    'lideta-01': 'በልደታ የሚገኝ 1 መኝታ ክፍል ያለው ቤት',
+    'arada-01': 'በፒያሳ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'arada-02': 'በአራት ኪሎ የሚገኝ 3 መኝታ ክፍል ያለው ቤት',
+    'nifas-01': 'በላፍቶ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'nifas-02': 'በጀሞ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'lideta-02': 'በተገባር እድ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'kolfe-01': 'በኮልፌ የሚገኝ 1 መኝታ ክፍል ያለው ቤት',
+    'kolfe-02': 'በአለም ባንክ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+    'gullele-01': 'በእንጦጦ የሚገኝ 1 መኝታ ክፍል ያለው ቤት',
+    'bole-03': 'በገርጂ የሚገኝ 4 መኝታ ክፍል ያለው ቤት',
+    'yeka-03': 'በሾላ የሚገኝ 2 መኝታ ክፍል ያለው ቤት',
+  };
+  static const _amSeedListingDescription =
+      'በአካባቢው ሱቆች እና የህዝብ መጓጓዣ አቅራቢያ የሚገኝ ብሩህ የኪራይ ቤት።';
+  static const Map<String, String> _amListingDescriptions = {
+    'bole-01': _amSeedListingDescription,
+    'bole-02': _amSeedListingDescription,
+    'yeka-01': _amSeedListingDescription,
+    'yeka-02': _amSeedListingDescription,
+    'kirkos-01': _amSeedListingDescription,
+    'kirkos-02': _amSeedListingDescription,
+    'lideta-01': _amSeedListingDescription,
+    'arada-01': _amSeedListingDescription,
+    'arada-02': _amSeedListingDescription,
+    'nifas-01': _amSeedListingDescription,
+    'nifas-02': _amSeedListingDescription,
+    'lideta-02': _amSeedListingDescription,
+    'kolfe-01': _amSeedListingDescription,
+    'kolfe-02': _amSeedListingDescription,
+    'gullele-01': _amSeedListingDescription,
+    'bole-03': _amSeedListingDescription,
+    'yeka-03': _amSeedListingDescription,
+  };
   static const Map<String, String> _am = {
     'authentication.appName': 'ኪራይ ቤት',
     "authentication.splashTitle": "ቀጣዩን ቤትዎን ያግኙ",
@@ -214,10 +295,30 @@ class L10n {
   static String textFor(String key, String english, String code) =>
       code.toLowerCase().startsWith('am') ? (_am[key] ?? english) : english;
 
+  static String localizedSubCity(String value) {
+    if (languageCode != 'am') return value;
+    final index = englishSubCities.indexOf(value);
+    return index == -1 ? value : _subCitiesAmharic[index];
+  }
+
+  static String localizedNeighbourhood(String value) =>
+      languageCode == 'am' ? (_amNeighbourhoods[value] ?? value) : value;
+
+  static String localizedListingTitle(Listing listing) => languageCode == 'am'
+      ? (_amListingTitles[listing.id] ?? listing.title)
+      : listing.title;
+
+  static String localizedListingDescription(Listing listing) =>
+      languageCode == 'am'
+      ? (_amListingDescriptions[listing.id] ?? listing.description)
+      : listing.description;
+
   static List<String> list(String key, List<String> english) {
     if (languageCode != 'am') return english;
-    if (key == 'listing.subCities') return const ['ቦሌ','የካ','ቂርቆስ','ልደታ','አራዳ','ንፋስ ስልክ ላፍቶ','ኮልፌ ቀራንዮ','ጉለሌ'];
-    if (key == 'listing.availableAmenities') return const ['ፓርኪንግ','ውሃ','ኤሌክትሪክ','ደህንነት','በረንዳ'];
+    if (key == 'listing.subCities') return _subCitiesAmharic;
+    if (key == 'listing.availableAmenities') {
+      return const ['ፓርኪንግ', 'ውሃ', 'ኤሌክትሪክ', 'ደህንነት', 'በረንዳ'];
+    }
     return english;
   }
 }

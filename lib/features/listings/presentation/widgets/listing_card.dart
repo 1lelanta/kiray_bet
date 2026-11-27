@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/constants/route_paths.dart';
 import '../../../../../core/formatters/birr_formatter.dart';
+import '../../../../../core/localization/l10n.dart';
 import '../../domain/listing.dart';
 import '../listing_strings.dart';
 
@@ -38,7 +39,7 @@ class ListingCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      listing.title,
+                      L10n.localizedListingTitle(listing),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: 4),
@@ -46,7 +47,9 @@ class ListingCard extends StatelessWidget {
                       formatBirr(listing.monthlyRentBirr, languageCode),
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    Text('${listing.subCity} · ${listing.neighbourhood}'),
+                    Text(
+                      '${L10n.localizedSubCity(listing.subCity)} · ${L10n.localizedNeighbourhood(listing.neighbourhood)}',
+                    ),
                     Text(
                       '${listing.bedrooms} ${ListingStrings.bedroomCount} · ${listing.bathrooms} ${ListingStrings.bathroomCount}',
                     ),
@@ -61,4 +64,3 @@ class ListingCard extends StatelessWidget {
     );
   }
 }
-
