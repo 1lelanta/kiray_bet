@@ -76,25 +76,25 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RoutePaths.splash,
         name: RouteNames.splash,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const SplashLanguageScreen(),
+        builder: (context, state) =>  SplashLanguageScreen(),
       ),
       GoRoute(
         path: RoutePaths.login,
         name: RouteNames.login,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) =>  LoginScreen(),
       ),
       GoRoute(
         path: RoutePaths.register,
         name: RouteNames.registration,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const RegistrationScreen(),
+        builder: (context, state) =>  RegistrationScreen(),
       ),
       GoRoute(
   path: RoutePaths.moderation,
   name: RouteNames.moderation,
   parentNavigatorKey: _rootNavigatorKey,
-  builder: (context, state) => const ModerationScreen(),
+  builder: (context, state) =>  ModerationScreen(),
 ),
       GoRoute(
         path: RoutePaths.report,
@@ -114,7 +114,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RoutePaths.viewingRequests,
         name: RouteNames.viewingRequests,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => const ViewingRequestsScreen(),
+        builder: (context, state) =>  ViewingRequestsScreen(),
       ),
       GoRoute(
         path: RoutePaths.requestViewing,
@@ -134,18 +134,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: RoutePaths.listings,
                 name: RouteNames.listings,
-                builder: (context, state) => const ListingsScreen(),
+                builder: (context, state) =>  ListingsScreen(),
                 routes: [
                   GoRoute(
                     path: 'filter',
                     name: RouteNames.listingFilter,
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const ListingFilterScreen(),
+                    builder: (context, state) =>  ListingFilterScreen(),
                   ),
                   GoRoute(
                     path: 'map',
                     name: RouteNames.listingMap,
-                    builder: (context, state) => const ListingMapScreen(),
+                    builder: (context, state) =>  ListingMapScreen(),
                   ),
                   GoRoute(
                     path: ':id',
@@ -209,7 +209,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'my-listings',
                     name: RouteNames.myListings,
-                    builder: (context, state) => const MyListingsScreen(),
+                    builder: (context, state) =>  MyListingsScreen(),
                   ),
                 ],
               ),

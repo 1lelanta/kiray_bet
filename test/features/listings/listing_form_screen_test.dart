@@ -16,12 +16,12 @@ void main() {
         overrides: [
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
         ],
-        child: const MaterialApp(home: ListingFormScreen()),
+        child:  MaterialApp(home: ListingFormScreen()),
       ),
     );
 
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.saveListing)));
-    await tester.tap(find.byKey(const Key(ListingStrings.saveListing)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.saveListing)));
+    await tester.tap(find.byKey( Key(ListingStrings.saveListing)));
     await tester.pumpAndSettle();
 
     expect(find.text(ListingStrings.required), findsWidgets);
@@ -35,22 +35,22 @@ void main() {
         overrides: [
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
         ],
-        child: const MaterialApp(home: ListingFormScreen()),
+        child:  MaterialApp(home: ListingFormScreen()),
       ),
     );
     await _fillRequiredFields(tester);
 
     await _enterField(tester, ListingStrings.latitude, '10');
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.saveListing)));
-    await tester.tap(find.byKey(const Key(ListingStrings.saveListing)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.saveListing)));
+    await tester.tap(find.byKey( Key(ListingStrings.saveListing)));
     await tester.pumpAndSettle();
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.latitude)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.latitude)));
     await tester.pumpAndSettle();
     expect(find.text(ListingStrings.coordinateError), findsOneWidget);
 
     await _enterField(tester, ListingStrings.latitude, '8.995');
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.saveListing)));
-    await tester.tap(find.byKey(const Key(ListingStrings.saveListing)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.saveListing)));
+    await tester.tap(find.byKey( Key(ListingStrings.saveListing)));
     await tester.pumpAndSettle();
     expect(find.text(ListingStrings.photoRequired), findsOneWidget);
   });
@@ -61,11 +61,11 @@ void main() {
         overrides: [
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
         ],
-        child: const MaterialApp(home: ListingFormScreen()),
+        child:  MaterialApp(home: ListingFormScreen()),
       ),
     );
     await _fillRequiredFields(tester);
-    final addPhotoButton = find.byKey(const Key(ListingStrings.addPhoto));
+    final addPhotoButton = find.byKey( Key(ListingStrings.addPhoto));
     await _scrollTo(tester, addPhotoButton);
     await tester.tap(addPhotoButton);
     await tester.pumpAndSettle();
@@ -81,7 +81,7 @@ void main() {
         overrides: [
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
         ],
-        child: const MaterialApp(
+        child:  MaterialApp(
           home: ListingFormScreen(listingId: 'unknown-listing'),
         ),
       ),
@@ -97,18 +97,18 @@ void main() {
         overrides: [
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
         ],
-        child: const MaterialApp(home: ListingFormScreen(listingId: 'bole-02')),
+        child:  MaterialApp(home: ListingFormScreen(listingId: 'bole-02')),
       ),
     );
     await tester.pumpAndSettle();
 
     expect(find.text(ListingStrings.editListing), findsOneWidget);
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.title)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.title)));
     final titleField = tester.widget<TextFormField>(
-      find.byKey(const Key(ListingStrings.title)),
+      find.byKey( Key(ListingStrings.title)),
     );
     expect(titleField.controller?.text, '3 bedroom home in Old Airport');
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.status)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.status)));
     expect(find.text(ListingStrings.status), findsOneWidget);
   });
 
@@ -146,15 +146,15 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.title)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.title)));
     await tester.enterText(
-      find.byKey(const Key(ListingStrings.title)),
+      find.byKey( Key(ListingStrings.title)),
       'Updated listing title',
     );
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pumpAndSettle();
-    await _scrollTo(tester, find.byKey(const Key(ListingStrings.saveListing)));
-    await tester.tap(find.byKey(const Key(ListingStrings.saveListing)));
+    await _scrollTo(tester, find.byKey( Key(ListingStrings.saveListing)));
+    await tester.tap(find.byKey( Key(ListingStrings.saveListing)));
     await tester.pumpAndSettle();
 
     expect(find.text('Updated listing title'), findsOneWidget);
@@ -173,7 +173,7 @@ void main() {
             (ref) => InMemoryListingRepository(),
           ),
         ],
-        child: const MaterialApp(home: ListingFormScreen(listingId: 'bole-02')),
+        child:  MaterialApp(home: ListingFormScreen(listingId: 'bole-02')),
       ),
     );
     await tester.pumpAndSettle();
@@ -184,7 +184,7 @@ void main() {
 }
 
 Future<void> _fillRequiredFields(WidgetTester tester) async {
-  const values = <String, String>{
+  var values = <String, String>{
     ListingStrings.title: 'Sunny apartment',
     ListingStrings.monthlyRent: '24000',
     ListingStrings.depositMonths: '2',
