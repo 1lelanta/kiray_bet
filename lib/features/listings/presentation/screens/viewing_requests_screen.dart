@@ -10,7 +10,7 @@ import '../providers/listing_providers.dart';
 import '../providers/viewing_request_providers.dart';
 
 class ViewingRequestsScreen extends ConsumerWidget {
-  const ViewingRequestsScreen({super.key, this.listingId});
+  ViewingRequestsScreen({super.key, this.listingId});
   final String? listingId;
 
   @override
@@ -23,8 +23,8 @@ class ViewingRequestsScreen extends ConsumerWidget {
           ? null
           : FloatingActionButton.extended(
               onPressed: () => _create(context, ref),
-              icon: const Icon(Icons.event_available),
-              label: const Text(ListingStrings.requestViewing),
+              icon: Icon(Icons.event_available),
+              label: Text(ListingStrings.requestViewing),
             ),
       body: ListView(
         children: [
@@ -41,12 +41,12 @@ class ViewingRequestsScreen extends ConsumerWidget {
                               item,
                               ViewingRequestStatus.cancelled,
                             ),
-                            child: const Text(ListingStrings.cancel),
+                            child: Text(ListingStrings.cancel),
                           )
                         : Text(item.status.name),
                   ),
-            loading: () => const LinearProgressIndicator(),
-            error: (e, s) => const Text(ListingStrings.error),
+            loading: () => LinearProgressIndicator(),
+            error: (e, s) => Text(ListingStrings.error),
           ),
           owner.when(
             data: (items) => items.isEmpty
@@ -63,7 +63,7 @@ class ViewingRequestsScreen extends ConsumerWidget {
                                   item,
                                   ViewingRequestStatus.accepted,
                                 ),
-                                child: const Text(ListingStrings.accept),
+                                child: Text(ListingStrings.accept),
                               ),
                               TextButton(
                                 onPressed: () => _update(
@@ -71,14 +71,14 @@ class ViewingRequestsScreen extends ConsumerWidget {
                                   item,
                                   ViewingRequestStatus.declined,
                                 ),
-                                child: const Text(ListingStrings.decline),
+                                child: Text(ListingStrings.decline),
                               ),
                             ],
                           )
                         : Text(item.status.name),
                   ),
-            loading: () => const LinearProgressIndicator(),
-            error: (e, s) => const Text(ListingStrings.error),
+            loading: () => LinearProgressIndicator(),
+            error: (e, s) => Text(ListingStrings.error),
           ),
         ],
       ),
@@ -94,7 +94,7 @@ class ViewingRequestsScreen extends ConsumerWidget {
     children: [
       Padding(
         padding: const EdgeInsets.all(12),
-        child: Text(title, style: const TextStyle(fontSize: 18)),
+        child: Text(title, style: TextStyle(fontSize: 18)),
       ),
       ...items.map(
         (item) => Card(
@@ -114,33 +114,33 @@ class ViewingRequestsScreen extends ConsumerWidget {
     if (!context.mounted) return;
     if (tenantId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(ListingStrings.signInRequired)),
+        SnackBar(content: Text(ListingStrings.signInRequired)),
       );
       return;
     }
     if (listing == null) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text(ListingStrings.notFound)));
+          .showSnackBar(SnackBar(content: Text(ListingStrings.notFound)));
       return;
     }
     if (listing.status != ListingStatus.available ||
         listing.ownerId == tenantId ||
         listing.ownerId == ref.read(currentOwnerIdProvider)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(ListingStrings.requestUnavailable)),
+        SnackBar(content: Text(ListingStrings.requestUnavailable)),
       );
       return;
     }
     final day = await showDatePicker(
       context: context,
-      firstDate: DateTime.now().add(const Duration(days: 1)),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      initialDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now().add(Duration(days: 1)),
+      lastDate: DateTime.now().add(Duration(days: 365)),
+      initialDate: DateTime.now().add(Duration(days: 1)),
     );
     if (day == null || !context.mounted) return;
     final time = await showTimePicker(
       context: context,
-      initialTime: const TimeOfDay(hour: 10, minute: 0),
+      initialTime: TimeOfDay(hour: 10, minute: 0),
     );
     if (time == null || !context.mounted) return;
     final proposed = DateTime(
@@ -152,7 +152,7 @@ class ViewingRequestsScreen extends ConsumerWidget {
     );
     if (!proposed.isAfter(DateTime.now())) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(ListingStrings.futureDateRequired)),
+        SnackBar(content: Text(ListingStrings.futureDateRequired)),
       );
       return;
     }
@@ -160,23 +160,23 @@ class ViewingRequestsScreen extends ConsumerWidget {
     final message = await showDialog<String>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text(ListingStrings.optionalMessage),
+        title: Text(ListingStrings.optionalMessage),
         content: TextField(
           controller: messageController,
           maxLines: 3,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: ListingStrings.messageHint,
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, ''),
-            child: const Text(ListingStrings.skip),
+            child: Text(ListingStrings.skip),
           ),
           FilledButton(
             onPressed: () =>
                 Navigator.pop(dialogContext, messageController.text.trim()),
-            child: const Text(ListingStrings.continueLabel),
+            child: Text(ListingStrings.continueLabel),
           ),
         ],
       ),

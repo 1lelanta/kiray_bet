@@ -11,7 +11,7 @@ import '../providers/listing_providers.dart';
 import '../widgets/listing_card.dart';
 
 class ListingMapScreen extends ConsumerStatefulWidget {
-  const ListingMapScreen({super.key});
+  ListingMapScreen({super.key});
   @override
   ConsumerState<ListingMapScreen> createState() => _ListingMapScreenState();
 }
@@ -24,8 +24,8 @@ class _ListingMapScreenState extends ConsumerState<ListingMapScreen> {
     return AppScaffold(
       title: ListingStrings.map,
       body: results.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, s) => const Center(child: Text(ListingStrings.error)),
+        loading: () => Center(child: CircularProgressIndicator()),
+        error: (e, s) => Center(child: Text(ListingStrings.error)),
         data: (all) {
           final listings = _area == null
               ? all
@@ -34,11 +34,11 @@ class _ListingMapScreenState extends ConsumerState<ListingMapScreen> {
             children: [
               DropdownButtonFormField<String>(
                 initialValue: _area,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: ListingStrings.selectedArea,
                 ),
                 items: [
-                  const DropdownMenuItem(
+                  DropdownMenuItem(
                     value: null,
                     child: Text(ListingStrings.any),
                   ),
@@ -71,12 +71,12 @@ class _ListingMapScreenState extends ConsumerState<ListingMapScreen> {
               ),
               OutlinedButton.icon(
                 onPressed: null,
-                icon: const Icon(Icons.my_location),
-                label: const Text(ListingStrings.nearMeLater),
+                icon: Icon(Icons.my_location),
+                label: Text(ListingStrings.nearMeLater),
               ),
               Expanded(
                 child: listings.isEmpty
-                    ? const EmptyState(
+                    ? EmptyState(
                         icon: Icons.map_outlined,
                         title: ListingStrings.empty,
                       )
@@ -121,7 +121,7 @@ class _AddisMapPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     canvas.drawRect(
       Offset.zero & size,
-      Paint()..color = const Color(0xFFEAF0ED),
+      Paint()..color = Color(0xFFEAF0ED),
     );
     final road = Paint()
       ..color = Colors.white
@@ -135,7 +135,7 @@ class _AddisMapPainter extends CustomPainter {
         ((listing.longitude - 38.67) / .21) * size.width,
         size.height - ((listing.latitude - 8.90) / .20) * size.height,
       );
-      canvas.drawCircle(point, 8, Paint()..color = const Color(0xFF2E7D68));
+      canvas.drawCircle(point, 8, Paint()..color = Color(0xFF2E7D68));
       canvas.drawCircle(point, 3, Paint()..color = Colors.white);
     }
   }

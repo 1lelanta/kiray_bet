@@ -12,7 +12,7 @@ import '../providers/authentication_providers.dart';
 import '../providers/selected_language_provider.dart';
 
 class RegistrationScreen extends ConsumerStatefulWidget {
-  const RegistrationScreen({super.key});
+  RegistrationScreen({super.key});
 
   @override
   ConsumerState<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -61,22 +61,22 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text(AuthenticationStrings.registerTitle)),
+    appBar: AppBar(title: Text(AuthenticationStrings.registerTitle)),
     body: SafeArea(
       child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 440),
+            constraints: BoxConstraints(maxWidth: 440),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
-                    key: const Key(AuthenticationStrings.name),
+                    key: Key(AuthenticationStrings.name),
                     controller: _name,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.name,
                     ),
                     textCapitalization: TextCapitalization.words,
@@ -85,11 +85,11 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       requiredMessage: AuthenticationStrings.requiredName,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   TextFormField(
-                    key: const Key(AuthenticationStrings.email),
+                    key: Key(AuthenticationStrings.email),
                     controller: _email,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.email,
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -99,11 +99,11 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       invalidMessage: AuthenticationStrings.invalidEmail,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   TextFormField(
-                    key: const Key(AuthenticationStrings.phone),
+                    key: Key(AuthenticationStrings.phone),
                     controller: _phone,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.phone,
                     ),
                     keyboardType: TextInputType.phone,
@@ -113,11 +113,11 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       invalidMessage: AuthenticationStrings.invalidPhone,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   TextFormField(
-                    key: const Key(AuthenticationStrings.password),
+                    key: Key(AuthenticationStrings.password),
                     controller: _password,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.password,
                     ),
                     obscureText: true,
@@ -127,14 +127,14 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       shortMessage: AuthenticationStrings.shortPassword,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   DropdownButtonFormField<UserRole>(
-                    key: const Key(AuthenticationStrings.role),
+                    key: Key(AuthenticationStrings.role),
                     initialValue: _role,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: AuthenticationStrings.role,
                     ),
-                    items: const [
+                    items: [
                       DropdownMenuItem(
                         value: UserRole.tenant,
                         child: Text(AuthenticationStrings.tenant),
@@ -149,24 +149,24 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                     }),
                   ),
                   if (_error != null) ...[
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
                     Text(
                       _error!,
-                      key: const Key('registration-error'),
+                      key: Key('registration-error'),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                   ],
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   FilledButton(
-                    key: const Key('registration-submit'),
+                    key: Key('registration-submit'),
                     onPressed: _register,
-                    child: const Text(AuthenticationStrings.createAccount),
+                    child: Text(AuthenticationStrings.createAccount),
                   ),
                   TextButton(
                     onPressed: () => context.go(RoutePaths.login),
-                    child: const Text(AuthenticationStrings.haveAccount),
+                    child: Text(AuthenticationStrings.haveAccount),
                   ),
                 ],
               ),

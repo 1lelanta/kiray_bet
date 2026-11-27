@@ -9,7 +9,7 @@ import '../providers/authentication_providers.dart';
 import '../providers/selected_language_provider.dart';
 
 class SplashLanguageScreen extends ConsumerWidget {
-  const SplashLanguageScreen({super.key});
+  SplashLanguageScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,37 +20,37 @@ class SplashLanguageScreen extends ConsumerWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
+              constraints: BoxConstraints(maxWidth: 420),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(Icons.home_work_outlined, size: 72),
-                  const SizedBox(height: 16),
+                  Icon(Icons.home_work_outlined, size: 72),
+                  SizedBox(height: 16),
                   Text(
                     AuthenticationStrings.appName,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     AuthenticationStrings.splashTitle,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     AuthenticationStrings.splashMessage,
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   Text(
                     AuthenticationStrings.language,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   SegmentedButton<String>(
-                    segments: const [
+                    segments: [
                       ButtonSegment(
                         value: 'en',
                         label: Text(AuthenticationStrings.english),
@@ -65,9 +65,9 @@ class SplashLanguageScreen extends ConsumerWidget {
                         .read(selectedLanguageProvider.notifier)
                         .setLanguage(selection.first),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                   FilledButton(
-                    key: const Key('entry-continue'),
+                    key: Key('entry-continue'),
                     onPressed: () {
                       final user = ref.read(currentUserProvider);
                       context.go(
@@ -76,7 +76,7 @@ class SplashLanguageScreen extends ConsumerWidget {
                             : AuthenticationDestination.forRole(user.role),
                       );
                     },
-                    child: const Text(AuthenticationStrings.continueLabel),
+                    child: Text(AuthenticationStrings.continueLabel),
                   ),
                 ],
               ),

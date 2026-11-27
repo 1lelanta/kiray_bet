@@ -66,7 +66,7 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(
+        child:  MaterialApp(
           home: ModerationScreen(),
         ),
       ),
@@ -108,7 +108,7 @@ void main() {
     await tester.pumpWidget(
       UncontrolledProviderScope(
         container: container,
-        child: const MaterialApp(
+        child:  MaterialApp(
           home: ModerationScreen(),
         ),
       ),
@@ -161,7 +161,7 @@ testWidgets('Other requires details before report submission',
   await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
-      child: const MaterialApp(
+      child:  MaterialApp(
         home: ReportScamScreen(listingId: 'listing-1'),
       ),
     ),

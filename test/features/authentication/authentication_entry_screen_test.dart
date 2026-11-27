@@ -106,9 +106,9 @@ void main() {
     await _enter(tester, AuthenticationStrings.phone, '+251912345678');
     await _enter(tester, AuthenticationStrings.password, 'secret1');
     await tester.ensureVisible(
-      find.byKey(const Key(AuthenticationStrings.role)),
+      find.byKey( Key(AuthenticationStrings.role)),
     );
-    await tester.tap(find.byKey(const Key(AuthenticationStrings.role)));
+    await tester.tap(find.byKey( Key(AuthenticationStrings.role)));
     await tester.pumpAndSettle();
     await tester.tap(find.text(AuthenticationStrings.owner).last);
     await tester.pumpAndSettle();

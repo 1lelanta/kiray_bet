@@ -9,7 +9,7 @@ import 'package:kiray_bet/features/report/presentation/providers/reports_provide
 import 'package:kiray_bet/features/report/presentation/report_strings.dart';
 
 class ReportScamScreen extends ConsumerStatefulWidget {
-  const ReportScamScreen({
+  ReportScamScreen({
     super.key,
     required this.listingId,
   });
@@ -49,7 +49,7 @@ class _ReportScamScreenState
     if (_selectedReason == null) {
       setState(() {});
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(ReportStrings.reasonRequired),
         ),
       );
@@ -103,7 +103,7 @@ class _ReportScamScreenState
     );
 
     if (user == null) {
-      return const AppScaffold(
+      return AppScaffold(
         title: ReportStrings.title,
         body: EmptyState(
           icon: Icons.login,
@@ -115,21 +115,21 @@ class _ReportScamScreenState
     return AppScaffold(
       title: ReportStrings.title,
       body: listing.when(
-        loading: () => const Center(
+        loading: () => Center(
           child: CircularProgressIndicator(),
         ),
-        error: (_, _) => const Center(
+        error: (_, _) => Center(
           child: Text(ReportStrings.listingNotFound),
         ),
         data: (item) {
           if (item == null) {
-            return const Center(
+            return Center(
               child: Text(ReportStrings.listingNotFound),
             );
           }
 
           if (_submitted) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -156,12 +156,12 @@ class _ReportScamScreenState
                   'Listing: ${item.title}',
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Text(
                   ReportStrings.chooseReason,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
 
                 ..._reasons.map(
                   (reason) => RadioListTile<String>(
@@ -179,12 +179,12 @@ class _ReportScamScreenState
                 ),
 
                 if (_selectedReason == ReportStrings.other) ...[
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   TextFormField(
                     controller: _detailsController,
                     enabled: !_isSubmitting,
                     maxLines: 4,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: ReportStrings.otherDetails,
                       border: OutlineInputBorder(),
                     ),
@@ -199,7 +199,7 @@ class _ReportScamScreenState
                   ),
                 ],
 
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
 
                 ElevatedButton(
                   onPressed: _isSubmitting ? null : _submitReport,
