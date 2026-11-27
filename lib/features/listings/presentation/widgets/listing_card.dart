@@ -61,3 +61,4 @@ class ListingCard extends StatelessWidget {
     );
   }
 }
+
