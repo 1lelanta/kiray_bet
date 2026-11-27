@@ -7,6 +7,7 @@ import 'core/theme/app_theme.dart';
 import 'features/profile/presentation/providers/theme_mode_provider.dart';
 import 'features/authentication/presentation/providers/selected_language_provider.dart';
 import 'core/localization/l10n.dart';
+import 'features/authentication/presentation/authentication_strings.dart';
 
 class KirayBetApp extends ConsumerWidget {
   const KirayBetApp({super.key});
@@ -24,7 +25,7 @@ class KirayBetApp extends ConsumerWidget {
       supportedLocales: const [Locale('en'), Locale('am')],
       localizationsDelegates: const [GlobalWidgetsLocalizations.delegate, GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate],
       debugShowCheckedModeBanner: false,
-      title: 'Kiray Bet',
+      title: AuthenticationStrings.appName,
     );
   }
 }

@@ -7,8 +7,10 @@ import 'package:kiray_bet/core/widgets/empty_state.dart';
 import 'package:kiray_bet/core/widgets/loading_view.dart';
 import 'package:kiray_bet/features/authentication/presentation/providers/authentication_providers.dart';
 import 'package:kiray_bet/features/favorites/presentation/providers/favorites_providers.dart';
+import 'package:kiray_bet/features/favorites/presentation/favorites_strings.dart';
 import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:kiray_bet/features/listings/domain/listing.dart';
+import 'package:kiray_bet/features/listings/presentation/listing_strings.dart';
 import 'package:kiray_bet/features/listings/presentation/widgets/listing_card.dart';
 
 class FavoritesScreen extends ConsumerWidget {
@@ -19,11 +21,11 @@ class FavoritesScreen extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
 
     if (user == null) {
-      return const AppScaffold(
-        title: 'Favorites',
+      return AppScaffold(
+        title: FavoritesStrings.title,
         body: EmptyState(
           icon: Icons.favorite_border,
-          title: 'Sign in to view favorites',
+          title: FavoritesStrings.signInPrompt,
         ),
       );
     }
@@ -31,19 +33,19 @@ class FavoritesScreen extends ConsumerWidget {
     final listings = ref.watch(favoriteListingsProvider);
 
     return AppScaffold(
-      title: 'Favorites',
+      title: FavoritesStrings.title,
       body: listings.when(
         loading: () => const LoadingView(),
-        error: (error, stack) => const EmptyState(
+        error: (error, stack) => EmptyState(
           icon: Icons.error_outline,
-          title: 'Could not load favorites',
+          title: FavoritesStrings.loadError,
         ),
         data: (items) {
           if (items.isEmpty) {
-            return const EmptyState(
+            return EmptyState(
               icon: Icons.favorite_border,
-              title: 'No favorites yet',
-              message: 'Save listings you like to find them here.',
+              title: FavoritesStrings.emptyTitle,
+              message: FavoritesStrings.emptyMessage,
             );
           }
 
@@ -70,9 +72,7 @@ class FavoritesScreen extends ConsumerWidget {
                       ),
                       child: Chip(
                         label: Text(
-                          listing.status == ListingStatus.rented
-                              ? 'Rented'
-                              : 'Hidden',
+                          ListingStrings.listingStatusLabel(listing.status),
                         ),
                       ),
                     ),

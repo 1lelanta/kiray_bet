@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../localization/common_strings.dart';
 import '../../features/compare/presentation/screens/compare_result_screen.dart';
 import '../../features/compare/presentation/screens/compare_selection_screen.dart';
 import '../../features/favorites/presentation/screens/favorites_screen.dart';
@@ -63,8 +64,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
       return null;
     },
-    errorBuilder: (context, state) =>
-        Scaffold(body: ErrorView(message: 'Page not found: ${state.uri}')),
+    errorBuilder: (context, state) => Scaffold(
+      body: ErrorView(message: CommonStrings.pageNotFound(state.uri.toString())),
+    ),
     routes: [
       GoRoute(
         path: RoutePaths.onboarding,

@@ -19,4 +19,5 @@ abstract final class ReportStrings {
   static String get signInRequired => L10n.text('report.signInRequired', "Please sign in to report a listing.");
   static String get error => L10n.text('report.error', "Could not submit your report. Please try again.");
   static String get listingNotFound => L10n.text('report.listingNotFound', "This listing could not be found.");
+  static String get listingLabel => L10n.text('report.listingLabel', "Listing");
 }

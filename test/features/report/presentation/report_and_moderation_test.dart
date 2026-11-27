@@ -58,7 +58,7 @@ void main() {
 
     addTearDown(container.dispose);
 
-    await container.read(currentUserProvider.notifier).signIn(
+    container.read(currentUserProvider.notifier).signIn(
           email: 'tenant@kiray.demo',
           password: 'Demo1234',
         );
@@ -100,7 +100,7 @@ void main() {
 
     addTearDown(container.dispose);
 
-    await container.read(currentUserProvider.notifier).signIn(
+    container.read(currentUserProvider.notifier).signIn(
           email: 'admin@kiray.demo',
           password: 'Demo1234',
         );
@@ -153,7 +153,7 @@ testWidgets('Other requires details before report submission',
 
   addTearDown(container.dispose);
 
-  await container.read(currentUserProvider.notifier).signIn(
+  container.read(currentUserProvider.notifier).signIn(
         email: 'tenant@kiray.demo',
         password: 'Demo1234',
       );

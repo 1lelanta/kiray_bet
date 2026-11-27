@@ -13,7 +13,7 @@ import 'package:kiray_bet/features/report/presentation/moderation_strings.dart';
 import 'package:kiray_bet/features/report/presentation/providers/reports_providers.dart';
 
 class ModerationScreen extends ConsumerStatefulWidget {
-  ModerationScreen({super.key});
+  const ModerationScreen({super.key});
 
   @override
   ConsumerState<ModerationScreen> createState() =>
@@ -93,7 +93,7 @@ class _ModerationScreenState
 }
 
 class ReportCard extends ConsumerWidget {
-  ReportCard({
+  const ReportCard({
     super.key,
     required this.report,
   });
@@ -188,11 +188,11 @@ class ReportCard extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 SizedBox(height: 8),
-                Text('Listing ID: ${report.listingId}'),
-                Text('Reporter ID: ${report.reporterId}'),
-                Text('Reason: ${report.reason}'),
+                Text('${ModerationStrings.listingIdLabel}: ${report.listingId}'),
+                Text('${ModerationStrings.reporterIdLabel}: ${report.reporterId}'),
+                Text('${ModerationStrings.reasonLabel}: ${report.reason}'),
                 Text(
-                  'Submitted: ${report.createdAt.toLocal()}',
+                  '${ModerationStrings.submittedLabel}: ${report.createdAt.toLocal()}',
                 ),
                 Text(
                   report.resolved

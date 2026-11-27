@@ -12,7 +12,7 @@ import '../providers/authentication_providers.dart';
 import '../providers/selected_language_provider.dart';
 
 class RegistrationScreen extends ConsumerStatefulWidget {
-  RegistrationScreen({super.key});
+  const RegistrationScreen({super.key});
 
   @override
   ConsumerState<RegistrationScreen> createState() => _RegistrationScreenState();

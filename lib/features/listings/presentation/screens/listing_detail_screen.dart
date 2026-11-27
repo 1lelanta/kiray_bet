@@ -16,7 +16,7 @@ import '../providers/listing_providers.dart';
 import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingDetailScreen extends ConsumerWidget {
-  ListingDetailScreen({super.key, required this.listingId});
+  const ListingDetailScreen({super.key, required this.listingId});
   final String listingId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -89,7 +89,7 @@ class _Details extends ConsumerWidget {
         Text(ListingStrings.demoOwnerName),
         Text(ListingStrings.demoOwnerPhone),
         if (listing.status != ListingStatus.available)
-          Text(listing.status.name),
+          Text(ListingStrings.listingStatusLabel(listing.status)),
         if (tenantId != null &&
             listing.status == ListingStatus.available &&
             !isOwnListing)

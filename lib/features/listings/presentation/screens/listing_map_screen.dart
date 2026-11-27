@@ -11,7 +11,7 @@ import '../providers/listing_providers.dart';
 import '../widgets/listing_card.dart';
 
 class ListingMapScreen extends ConsumerStatefulWidget {
-  ListingMapScreen({super.key});
+  const ListingMapScreen({super.key});
   @override
   ConsumerState<ListingMapScreen> createState() => _ListingMapScreenState();
 }

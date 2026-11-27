@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../localization/common_strings.dart';
+
 /// A reusable view for displaying errors and an optional retry action.
 class ErrorView extends StatelessWidget {
   const ErrorView({
@@ -34,7 +36,7 @@ class ErrorView extends StatelessWidget {
               const SizedBox(height: 20),
               OutlinedButton(
                 onPressed: onRetry,
-                child: const Text('Try again'),
+                child: Text(CommonStrings.tryAgain),
               ),
             ],
           ],

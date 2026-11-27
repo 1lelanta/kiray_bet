@@ -1,24 +1,37 @@
-/// User-facing text for the Profile screen.
-///
-/// Follows the project's per-feature strings convention (see
-/// `AuthenticationStrings` and `ListingStrings`). Shared labels such as
-/// field names and validation messages are reused from
-/// `AuthenticationStrings` rather than duplicated here.
+import '../../../core/localization/l10n.dart';
+
 abstract final class ProfileStrings {
-  static const profileTitle = 'Profile';
-  static const accountDetails = 'Account details';
-  static const editDetails = 'Edit details';
-  static const role = 'Role';
-  static const roleTenant = 'Tenant';
-  static const roleOwner = 'Owner';
-  static const roleAdmin = 'Administrator';
-  static const readOnlyHint = 'Managed by your account and cannot be changed.';
-  static const saveChanges = 'Save changes';
-  static const saving = 'Saving…';
-  static const updateSuccess = 'Profile updated.';
-  static const updateFailed = 'Your profile could not be saved. Try again.';
-  static const signedOutTitle = 'You are not signed in';
-  static const signedOutMessage = 'Sign in to view and edit your profile.';
-  static const signIn = 'Sign in';
-  static const openSettings = 'Settings';
+  static String get profileTitle =>
+      L10n.text('profile.profileTitle', 'Profile');
+  static String get accountDetails =>
+      L10n.text('profile.accountDetails', 'Account details');
+  static String get editDetails =>
+      L10n.text('profile.editDetails', 'Edit details');
+  static String get role => L10n.text('profile.role', 'Role');
+  static String get roleTenant => L10n.text('profile.roleTenant', 'Tenant');
+  static String get roleOwner => L10n.text('profile.roleOwner', 'Owner');
+  static String get roleAdmin =>
+      L10n.text('profile.roleAdmin', 'Administrator');
+  static String get readOnlyHint => L10n.text(
+    'profile.readOnlyHint',
+    'Managed by your account and cannot be changed.',
+  );
+  static String get saveChanges =>
+      L10n.text('profile.saveChanges', 'Save changes');
+  static String get saving => L10n.text('profile.saving', 'Saving…');
+  static String get updateSuccess =>
+      L10n.text('profile.updateSuccess', 'Profile updated.');
+  static String get updateFailed => L10n.text(
+    'profile.updateFailed',
+    'Your profile could not be saved. Try again.',
+  );
+  static String get signedOutTitle =>
+      L10n.text('profile.signedOutTitle', 'You are not signed in');
+  static String get signedOutMessage => L10n.text(
+    'profile.signedOutMessage',
+    'Sign in to view and edit your profile.',
+  );
+  static String get signIn => L10n.text('profile.signIn', 'Sign in');
+  static String get openSettings =>
+      L10n.text('profile.openSettings', 'Settings');
 }

@@ -11,7 +11,7 @@ import '../widgets/listing_card.dart';
 import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingsScreen extends ConsumerWidget {
-  ListingsScreen({super.key});
+  const ListingsScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listings = ref.watch(filteredListingsProvider);

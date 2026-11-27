@@ -8,7 +8,7 @@ import '../providers/listing_data_providers.dart';
 import '../providers/listing_providers.dart';
 
 class ListingFormScreen extends ConsumerStatefulWidget {
-  ListingFormScreen({super.key, this.listingId});
+  const ListingFormScreen({super.key, this.listingId});
   final String? listingId;
 
   @override
@@ -199,7 +199,14 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
                   labelText: ListingStrings.status,
                 ),
                 items: ListingStatus.values
-                    .map((v) => DropdownMenuItem(value: v, child: Text(v.name)))
+                    .map(
+                      (status) => DropdownMenuItem(
+                        value: status,
+                        child: Text(
+                          ListingStrings.listingStatusLabel(status),
+                        ),
+                      ),
+                    )
                     .toList(),
                 onChanged: (v) => setState(() => _status = v ?? _status),
               ),
@@ -343,7 +350,7 @@ class _ListingFormScreenState extends ConsumerState<ListingFormScreen> {
 }
 
 class ListingDescriptionField extends StatelessWidget {
-  ListingDescriptionField({
+  const ListingDescriptionField({
     super.key,
     required this.controller,
     required this.values,

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../../core/widgets/app_scaffold.dart';
 import '../../../../../core/constants/route_paths.dart';
+import '../onboarding_strings.dart';
 import '../providers/onboarding_providers.dart';
 
 /// Three-page introduction shown before the main app.
@@ -18,21 +19,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  static const _pages = [
+  static List<({IconData icon, String title, String text})> get _pages => [
     (
       icon: Icons.home_work_outlined,
-      title: 'Find a home in Addis',
-      text: 'Browse rental listings near you.',
+      title: OnboardingStrings.findHomeTitle,
+      text: OnboardingStrings.findHomeText,
     ),
     (
       icon: Icons.compare_arrows,
-      title: 'Compare side by side',
-      text: 'Spot the overpriced options before you decide.',
+      title: OnboardingStrings.compareTitle,
+      text: OnboardingStrings.compareText,
     ),
     (
       icon: Icons.verified_user_outlined,
-      title: 'Report scams and save favorites',
-      text: 'Keep useful listings close and help others stay safe.',
+      title: OnboardingStrings.reportTitle,
+      text: OnboardingStrings.reportText,
     ),
   ];
 
@@ -57,7 +58,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: 'Onboarding',
+      title: OnboardingStrings.title,
       padding: EdgeInsets.zero,
       body: Column(
         children: [
@@ -122,15 +123,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 if (_currentPage < 2)
                   TextButton(
                     onPressed: _finishOnboarding,
-                    child: const Text('Skip'),
+                    child: Text(OnboardingStrings.skip),
                   ),
                 const Spacer(),
                 if (_currentPage < 2)
-                  FilledButton(onPressed: _nextPage, child: const Text('Next'))
+                  FilledButton(
+                    onPressed: _nextPage,
+                    child: Text(OnboardingStrings.next),
+                  )
                 else
                   FilledButton(
                     onPressed: _finishOnboarding,
-                    child: const Text('Get started'),
+                    child: Text(OnboardingStrings.getStarted),
                   ),
               ],
             ),

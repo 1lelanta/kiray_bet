@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -52,11 +52,11 @@ Future<ProviderContainer> pumpSettingsTestApp(
       ),
       GoRoute(
         path: RoutePaths.login,
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => LoginScreen(),
       ),
       GoRoute(
         path: RoutePaths.myListings,
-        builder: (context, state) => const MyListingsScreen(),
+        builder: (context, state) => MyListingsScreen(),
       ),
       GoRoute(
         path: RoutePaths.favorites,
@@ -64,11 +64,11 @@ Future<ProviderContainer> pumpSettingsTestApp(
       ),
       GoRoute(
         path: RoutePaths.viewingRequests,
-        builder: (context, state) => const ViewingRequestsScreen(),
+        builder: (context, state) => ViewingRequestsScreen(),
       ),
       GoRoute(
         path: RoutePaths.moderation,
-        builder: (context, state) => const AuthFeaturePlaceholderScreen(
+        builder: (context, state) => AuthFeaturePlaceholderScreen(
           title: AuthenticationStrings.moderationTitle,
           message: AuthenticationStrings.moderationUnavailable,
         ),
