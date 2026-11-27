@@ -1,17 +1,11 @@
 import 'package:material_ui/material_ui.dart';
 
-import '../../../../../core/widgets/app_scaffold.dart';
-import '../../../../../core/widgets/empty_state.dart';
+import 'account_settings_screen.dart';
 
-/// Placeholder for profile settings.
+/// Settings page under the Profile tab.
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AppScaffold(
-      title: 'Settings',
-      body: EmptyState(icon: Icons.settings_outlined, title: 'Settings'),
-    );
-  }
+  Widget build(BuildContext context) => const AccountSettingsScreen();
 }
