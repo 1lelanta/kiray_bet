@@ -3,6 +3,9 @@ import 'l10n.dart';
 abstract final class CommonStrings {
   static String get tryAgain => L10n.text('common.tryAgain', 'Try again');
 
+  static String get accessDenied =>
+      L10n.text('common.accessDenied', "You don't have access to that page.");
+
   static String pageNotFound(String uri) => L10n.text(
     'common.pageNotFound',
     'Page not found: {uri}',
