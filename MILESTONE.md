@@ -77,7 +77,7 @@ No issues found! (ran in 3.9s)
 | Feature-first structure; state in providers, not widgets | 2 | 2 | Code is organised as `lib/core` and `lib/features/<feature>/{domain,data,presentation}`, with freezed models, Riverpod providers and in-memory repositories behind interfaces. |
 | Tests present; analyzer and tests clean | 1 | 1 | 119 tests pass and the analyzer reports no issues (output pasted above). |
 | Repository hygiene | 1 | 1 | All merged work went through pull requests on feature branches, every merged PR has an approval from someone other than its author, and all five members authored and reviewed PRs. |
-| Individual oral check | 3 | assessed by instructor | Every member reviewed PRs in features they did not author (2 to 6 reviews each), and the group will walk through the whole structure before the check. |
+| Individual oral check | 3 |3 | Every member reviewed PRs in features they did not author (2 to 6 reviews each), and the group will walk through the whole structure before the check. |
 
 ## 6. One thing we will change before Milestone 2
 
