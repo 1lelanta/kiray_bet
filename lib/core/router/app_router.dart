@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../localization/common_strings.dart';
-import '../../features/compare/presentation/screens/compare_result_screen.dart';
-import '../../features/compare/presentation/screens/compare_selection_screen.dart';
 import '../../features/favorites/presentation/screens/favorites_screen.dart';
 import '../../features/listings/presentation/screens/listing_detail_screen.dart';
 import '../../features/listings/presentation/screens/listing_filter_screen.dart';
@@ -16,6 +14,7 @@ import '../../features/onboarding/domain/onboarding_state.dart';
 import '../../features/onboarding/presentation/providers/onboarding_providers.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/authentication/presentation/authentication_destination.dart';
+import '../../features/authentication/domain/user_profile.dart';
 import '../../features/authentication/presentation/providers/authentication_providers.dart';
 import '../../features/authentication/presentation/screens/login_screen.dart';
 import '../../features/authentication/presentation/screens/registration_screen.dart';
@@ -34,6 +33,22 @@ import '../../features/report/presentation/screens/moderation_screen.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
+enum GuardMessage { accessDenied }
+
+final guardMessageProvider =
+    NotifierProvider<GuardMessageNotifier, GuardMessage?>(
+      GuardMessageNotifier.new,
+    );
+
+class GuardMessageNotifier extends Notifier<GuardMessage?> {
+  @override
+  GuardMessage? build() => null;
+
+  void showAccessDenied() => state = GuardMessage.accessDenied;
+
+  void clear() => state = null;
+}
+
 class _RouterRefreshNotifier extends ChangeNotifier {
   void refresh() => notifyListeners();
 }
@@ -45,6 +60,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     onboardingNotifierProvider,
     (_, _) => refreshNotifier.refresh(),
   );
+  ref.listen(currentUserProvider, (_, _) => refreshNotifier.refresh());
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: RoutePaths.onboarding,
@@ -52,20 +68,44 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final seen = ref.read(onboardingNotifierProvider).hasSeenOnboarding;
       final user = ref.read(currentUserProvider);
-      final onboarding = state.uri.path == RoutePaths.onboarding;
-      if (!seen && !onboarding) return RoutePaths.onboarding;
-      if (seen && onboarding) {
+      final matchedPath = state.fullPath ?? state.matchedLocation;
+      final onboarding = matchedPath == RoutePaths.onboarding;
+
+      if (!seen && !onboarding) {
+        return RoutePaths.onboarding;
+      }
+
+      if (onboarding) {
+        if (!seen) return null;
         return user == null
             ? RoutePaths.splash
             : AuthenticationDestination.forRole(user.role);
       }
-      if (state.uri.path == RoutePaths.splash && user != null) {
+
+      final isPublicRoute =
+          matchedPath == RoutePaths.splash ||
+          matchedPath == RoutePaths.login ||
+          matchedPath == RoutePaths.register;
+      if (user == null) {
+        return isPublicRoute ? null : RoutePaths.login;
+      }
+
+      if (isPublicRoute) {
         return AuthenticationDestination.forRole(user.role);
       }
+
+      final requiredRole = _requiredRoleForPath(matchedPath);
+      if (requiredRole != null && user.role != requiredRole) {
+        ref.read(guardMessageProvider.notifier).showAccessDenied();
+        return AuthenticationDestination.forRole(user.role);
+      }
+
       return null;
     },
     errorBuilder: (context, state) => Scaffold(
-      body: ErrorView(message: CommonStrings.pageNotFound(state.uri.toString())),
+      body: ErrorView(
+        message: CommonStrings.pageNotFound(state.uri.toString()),
+      ),
     ),
     routes: [
       GoRoute(
@@ -78,26 +118,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: RoutePaths.splash,
         name: RouteNames.splash,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) =>  SplashLanguageScreen(),
+        builder: (context, state) => SplashLanguageScreen(),
       ),
       GoRoute(
         path: RoutePaths.login,
         name: RouteNames.login,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) =>  LoginScreen(),
+        builder: (context, state) => LoginScreen(),
       ),
       GoRoute(
         path: RoutePaths.register,
         name: RouteNames.registration,
         parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) =>  RegistrationScreen(),
+        builder: (context, state) => RegistrationScreen(),
       ),
-      GoRoute(
-  path: RoutePaths.moderation,
-  name: RouteNames.moderation,
-  parentNavigatorKey: _rootNavigatorKey,
-  builder: (context, state) =>  ModerationScreen(),
-),
       GoRoute(
         path: RoutePaths.report,
         name: RouteNames.report,
@@ -112,20 +146,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const PostListingScreen(),
       ),
-      GoRoute(
-        path: RoutePaths.viewingRequests,
-        name: RouteNames.viewingRequests,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) =>  ViewingRequestsScreen(),
-      ),
-      GoRoute(
-        path: RoutePaths.requestViewing,
-        name: RouteNames.requestViewing,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => ViewingRequestsScreen(
-          listingId: state.pathParameters['listingId'] ?? '',
-        ),
-      ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state, shell) => AppShell(navigationShell: shell),
@@ -136,21 +156,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: RoutePaths.listings,
                 name: RouteNames.listings,
-                builder: (context, state) =>  ListingsScreen(),
+                builder: (context, state) => ListingsScreen(),
                 routes: [
                   GoRoute(
-                    path: 'filter',
+                    path: _relativeRoutePath(
+                      RoutePaths.listings,
+                      RoutePaths.listingFilter,
+                    ),
                     name: RouteNames.listingFilter,
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) =>  ListingFilterScreen(),
+                    builder: (context, state) => ListingFilterScreen(),
                   ),
                   GoRoute(
-                    path: 'map',
-                    name: RouteNames.listingMap,
-                    builder: (context, state) =>  ListingMapScreen(),
-                  ),
-                  GoRoute(
-                    path: ':id',
+                    path: _relativeRoutePath(
+                      RoutePaths.listings,
+                      RoutePaths.listingDetail,
+                    ),
                     name: RouteNames.listingDetail,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ListingDetailScreen(
@@ -158,7 +179,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     ),
                     routes: [
                       GoRoute(
-                        path: 'edit',
+                        path: _relativeRoutePath(
+                          RoutePaths.listingDetail,
+                          RoutePaths.listingEdit,
+                        ),
                         name: RouteNames.listingEdit,
                         parentNavigatorKey: _rootNavigatorKey,
                         builder: (context, state) => ListingFormScreen(
@@ -174,16 +198,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: RoutePaths.compare,
-                name: RouteNames.compare,
-                builder: (context, state) => const CompareSelectionScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'result',
-                    name: RouteNames.compareResult,
-                    builder: (context, state) => const CompareResultScreen(),
-                  ),
-                ],
+                path: RoutePaths.listingMap,
+                name: RouteNames.listingMap,
+                builder: (context, state) => ListingMapScreen(),
               ),
             ],
           ),
@@ -199,19 +216,56 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                path: RoutePaths.viewingRequests,
+                name: RouteNames.viewingRequests,
+                builder: (context, state) => ViewingRequestsScreen(),
+                routes: [
+                  GoRoute(
+                    path: _relativeRoutePath(
+                      RoutePaths.viewingRequests,
+                      RoutePaths.requestViewing,
+                    ),
+                    name: RouteNames.requestViewing,
+                    builder: (context, state) => ViewingRequestsScreen(
+                      listingId: state.pathParameters['listingId'] ?? '',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.myListings,
+                name: RouteNames.myListings,
+                builder: (context, state) => MyListingsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.moderation,
+                name: RouteNames.moderation,
+                builder: (context, state) => ModerationScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 path: RoutePaths.profile,
                 name: RouteNames.profile,
                 builder: (context, state) => const ProfileScreen(),
                 routes: [
                   GoRoute(
-                    path: 'settings',
+                    path: _relativeRoutePath(
+                      RoutePaths.profile,
+                      RoutePaths.settings,
+                    ),
                     name: RouteNames.settings,
                     builder: (context, state) => const SettingsScreen(),
-                  ),
-                  GoRoute(
-                    path: 'my-listings',
-                    name: RouteNames.myListings,
-                    builder: (context, state) =>  MyListingsScreen(),
                   ),
                 ],
               ),
@@ -222,3 +276,36 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+UserRole? _requiredRoleForPath(String matchedPath) {
+  if (_matchesRoute(matchedPath, RoutePaths.favorites) ||
+      _matchesRoute(matchedPath, RoutePaths.report)) {
+    return UserRole.tenant;
+  }
+  if (_matchesRoute(matchedPath, RoutePaths.post) ||
+      _matchesRoute(matchedPath, RoutePaths.listingEdit) ||
+      _matchesRoute(matchedPath, RoutePaths.myListings)) {
+    return UserRole.owner;
+  }
+  if (_matchesRoute(matchedPath, RoutePaths.moderation)) {
+    return UserRole.admin;
+  }
+  return null;
+}
+
+bool _matchesRoute(String matchedPath, String routePath) {
+  final matchedSegments = Uri.parse(matchedPath).pathSegments;
+  final routeSegments = Uri.parse(routePath).pathSegments;
+  if (matchedSegments.length < routeSegments.length) return false;
+
+  for (var index = 0; index < routeSegments.length; index++) {
+    final routeSegment = routeSegments[index];
+    if (routeSegment.startsWith(':')) continue;
+    if (matchedSegments[index] != routeSegment) return false;
+  }
+
+  return true;
+}
+
+String _relativeRoutePath(String parentPath, String fullPath) =>
+    fullPath.substring(parentPath.length + 1);

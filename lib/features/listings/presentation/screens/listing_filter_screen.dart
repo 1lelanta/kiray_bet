@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../../core/localization/l10n.dart';
 import '../../../../../core/widgets/app_scaffold.dart';
 import '../../domain/listing_filter.dart';
 import '../listing_strings.dart';
@@ -35,7 +36,7 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final subCities = ListingStrings.subCities;
+    final subCities = L10n.englishSubCities;
     return AppScaffold(
       title: ListingStrings.filter,
       body: ListView(
@@ -51,7 +52,10 @@ class _ListingFilterScreenState extends ConsumerState<ListingFilterScreen> {
                 child: Text(ListingStrings.any),
               ),
               ...subCities.map(
-                (value) => DropdownMenuItem(value: value, child: Text(value)),
+                (value) => DropdownMenuItem(
+                  value: value,
+                  child: Text(L10n.localizedSubCity(value)),
+                ),
               ),
             ],
             onChanged: (value) => setState(() => _subCity = value),

@@ -68,21 +68,13 @@ A mobile application is an appropriate solution because house searching is locat
 
 ### Key Screen Sketches
 
-**1. Login Screen**
+| Login Screen | Home/Browse Screen |
+|---|---|
+| ![Login Screen](sketches/1_login.png) | ![Home/Browse Screen](sketches/2_home_browse.png) |
 
-![Login Screen](sketches/1_login.png)
-
-**2. Home/Browse Screen**
-
-![Home/Browse Screen](sketches/2_home_browse.png)
-
-**3. Listing Details Screen**
-
-![Listing Details Screen](sketches/3_listing_detail.png)
-
-**4. Add Listing Screen**
-
-![Add Listing Screen](sketches/4_add_listing.png)
+| Listing Details Screen | Add Listing Screen |
+|---|---|
+| ![Listing Details Screen](sketches/3_listing_detail.png) | ![Add Listing Screen](sketches/4_add_listing.png) |
 
 ## 7. Data model
 

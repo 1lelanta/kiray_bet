@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/route_names.dart';
 import '../../../../core/formatters/birr_formatter.dart';
+import '../../../../core/localization/l10n.dart';
 import '../../../../core/widgets/app_scaffold.dart';
 import '../../../../core/widgets/empty_state.dart';
 import '../../../../core/widgets/error_view.dart';
@@ -13,6 +13,7 @@ import '../../domain/listing.dart';
 import '../listing_strings.dart';
 import '../providers/listing_data_providers.dart';
 import '../providers/listing_providers.dart';
+
 import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingDetailScreen extends ConsumerWidget {
@@ -61,12 +62,17 @@ class _Details extends ConsumerWidget {
           ),
         ),
         SizedBox(height: 16),
-        Text(listing.title, style: Theme.of(context).textTheme.headlineSmall),
+        Text(
+          L10n.localizedListingTitle(listing),
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         Text(
           formatBirr(listing.monthlyRentBirr, locale),
           style: Theme.of(context).textTheme.titleLarge,
         ),
-        Text('${listing.subCity} · ${listing.neighbourhood}'),
+        Text(
+          '${L10n.localizedSubCity(listing.subCity)} · ${L10n.localizedNeighbourhood(listing.neighbourhood)}',
+        ),
         Text(
           '${listing.bedrooms} ${ListingStrings.bedroomCount} · ${listing.bathrooms} ${ListingStrings.bathroomCount} · ${listing.areaSqm} m²',
         ),
@@ -74,7 +80,7 @@ class _Details extends ConsumerWidget {
           ListingStrings.description,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        Text(listing.description),
+        Text(L10n.localizedListingDescription(listing)),
         Text(
           ListingStrings.location,
           style: Theme.of(context).textTheme.titleMedium,
