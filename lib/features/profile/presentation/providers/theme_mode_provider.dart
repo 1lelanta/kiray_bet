@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Placeholder. Lemmi replaces this with the real provider backed by settings.
+import '../../domain/app_settings.dart';
+import 'app_settings_provider.dart';
+
+/// The [ThemeMode] that `KirayBetApp` applies, derived from the theme
+/// preference chosen in Settings. Name and type are kept for `app.dart`.
 final themeModeProvider = Provider<ThemeMode>(
-  (ref) => ThemeMode.system,
+  (ref) => switch (ref.watch(appSettingsProvider).themePreference) {
+    AppThemePreference.system => ThemeMode.system,
+    AppThemePreference.light => ThemeMode.light,
+    AppThemePreference.dark => ThemeMode.dark,
+  },
 );
