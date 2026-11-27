@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,10 +8,10 @@ import '../../../../../core/widgets/empty_state.dart';
 import '../listing_strings.dart';
 import '../providers/listing_providers.dart';
 import '../widgets/listing_card.dart';
+import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingsScreen extends ConsumerWidget {
   const ListingsScreen({super.key});
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final listings = ref.watch(filteredListingsProvider);
@@ -56,7 +56,9 @@ class ListingsScreen extends ConsumerWidget {
                 itemCount: items.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 12),
                 itemBuilder: (context, index) =>
-                    ListingCard(listing: items[index]),
+                    ListingCard(listing: items[index],
+                    trailing: FavoriteButton(
+                    listingId: items[index].id,),),
               ),
       ),
     );

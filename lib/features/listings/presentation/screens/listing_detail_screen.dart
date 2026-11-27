@@ -1,4 +1,5 @@
-import 'package:material_ui/material_ui.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +13,7 @@ import '../../domain/listing.dart';
 import '../listing_strings.dart';
 import '../providers/listing_data_providers.dart';
 import '../providers/listing_providers.dart';
+import 'package:kiray_bet/features/favorites/presentation/widgets/favorite_button.dart';
 
 class ListingDetailScreen extends ConsumerWidget {
   const ListingDetailScreen({super.key, required this.listingId});
@@ -50,6 +52,7 @@ class _Details extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.only(bottom: 24),
       children: [
+        FavoriteButton(listingId: listing.id),
         const SizedBox(
           height: 180,
           child: ColoredBox(
