@@ -17,3 +17,11 @@ abstract final class CommonStrings {
   static String perMonthFor(String languageCode) =>
       L10n.textFor('common.perMonth', '/ month', languageCode);
 }
+
+abstract final class NavigationStrings {
+  static String get browse => L10n.text('navigation.browse', 'Browse');
+  static String get favourites =>
+      L10n.text('navigation.favourites', 'Favourites');
+  static String get profileAndSettings =>
+      L10n.text('navigation.profileAndSettings', 'Profile and Settings');
+}

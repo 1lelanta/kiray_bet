@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../localization/common_strings.dart';
-import '../../features/compare/presentation/screens/compare_result_screen.dart';
-import '../../features/compare/presentation/screens/compare_selection_screen.dart';
 import '../../features/favorites/presentation/screens/favorites_screen.dart';
 import '../../features/listings/presentation/screens/listing_detail_screen.dart';
 import '../../features/listings/presentation/screens/listing_filter_screen.dart';
@@ -135,12 +133,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => RegistrationScreen(),
       ),
       GoRoute(
-        path: RoutePaths.moderation,
-        name: RouteNames.moderation,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => ModerationScreen(),
-      ),
-      GoRoute(
         path: RoutePaths.report,
         name: RouteNames.report,
         parentNavigatorKey: _rootNavigatorKey,
@@ -153,20 +145,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: RouteNames.post,
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const PostListingScreen(),
-      ),
-      GoRoute(
-        path: RoutePaths.viewingRequests,
-        name: RouteNames.viewingRequests,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => ViewingRequestsScreen(),
-      ),
-      GoRoute(
-        path: RoutePaths.requestViewing,
-        name: RouteNames.requestViewing,
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) => ViewingRequestsScreen(
-          listingId: state.pathParameters['listingId'] ?? '',
-        ),
       ),
       StatefulShellRoute.indexedStack(
         parentNavigatorKey: _rootNavigatorKey,
@@ -181,18 +159,19 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) => ListingsScreen(),
                 routes: [
                   GoRoute(
-                    path: 'filter',
+                    path: _relativeRoutePath(
+                      RoutePaths.listings,
+                      RoutePaths.listingFilter,
+                    ),
                     name: RouteNames.listingFilter,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ListingFilterScreen(),
                   ),
                   GoRoute(
-                    path: 'map',
-                    name: RouteNames.listingMap,
-                    builder: (context, state) => ListingMapScreen(),
-                  ),
-                  GoRoute(
-                    path: ':id',
+                    path: _relativeRoutePath(
+                      RoutePaths.listings,
+                      RoutePaths.listingDetail,
+                    ),
                     name: RouteNames.listingDetail,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => ListingDetailScreen(
@@ -200,7 +179,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     ),
                     routes: [
                       GoRoute(
-                        path: 'edit',
+                        path: _relativeRoutePath(
+                          RoutePaths.listingDetail,
+                          RoutePaths.listingEdit,
+                        ),
                         name: RouteNames.listingEdit,
                         parentNavigatorKey: _rootNavigatorKey,
                         builder: (context, state) => ListingFormScreen(
@@ -216,16 +198,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: RoutePaths.compare,
-                name: RouteNames.compare,
-                builder: (context, state) => const CompareSelectionScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'result',
-                    name: RouteNames.compareResult,
-                    builder: (context, state) => const CompareResultScreen(),
-                  ),
-                ],
+                path: RoutePaths.listingMap,
+                name: RouteNames.listingMap,
+                builder: (context, state) => ListingMapScreen(),
               ),
             ],
           ),
@@ -241,19 +216,56 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
+                path: RoutePaths.viewingRequests,
+                name: RouteNames.viewingRequests,
+                builder: (context, state) => ViewingRequestsScreen(),
+                routes: [
+                  GoRoute(
+                    path: _relativeRoutePath(
+                      RoutePaths.viewingRequests,
+                      RoutePaths.requestViewing,
+                    ),
+                    name: RouteNames.requestViewing,
+                    builder: (context, state) => ViewingRequestsScreen(
+                      listingId: state.pathParameters['listingId'] ?? '',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.myListings,
+                name: RouteNames.myListings,
+                builder: (context, state) => MyListingsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: RoutePaths.moderation,
+                name: RouteNames.moderation,
+                builder: (context, state) => ModerationScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 path: RoutePaths.profile,
                 name: RouteNames.profile,
                 builder: (context, state) => const ProfileScreen(),
                 routes: [
                   GoRoute(
-                    path: 'settings',
+                    path: _relativeRoutePath(
+                      RoutePaths.profile,
+                      RoutePaths.settings,
+                    ),
                     name: RouteNames.settings,
                     builder: (context, state) => const SettingsScreen(),
-                  ),
-                  GoRoute(
-                    path: 'my-listings',
-                    name: RouteNames.myListings,
-                    builder: (context, state) => MyListingsScreen(),
                   ),
                 ],
               ),
@@ -294,3 +306,6 @@ bool _matchesRoute(String matchedPath, String routePath) {
 
   return true;
 }
+
+String _relativeRoutePath(String parentPath, String fullPath) =>
+    fullPath.substring(parentPath.length + 1);

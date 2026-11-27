@@ -288,6 +288,9 @@ class L10n {
     "moderation.reporterIdLabel": "የሪፖርት አቅራቢ መለያ",
     "moderation.reasonLabel": "ምክንያት",
     "moderation.submittedLabel": "የቀረበበት ቀን",
+    "navigation.browse": "የቤት ኪራይ ይፈልጉ",
+    "navigation.favourites": "ተወዳጆች",
+    "navigation.profileAndSettings": "መገለጫ እና ቅንብሮች",
   };
   static String text(String key, String english) =>
       textFor(key, english, languageCode);
