@@ -1,4 +1,4 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
 
 /// Provides the application's consistent light and dark themes.
 abstract final class AppTheme {
