@@ -16,7 +16,7 @@ void main() {
         overrides: [
           listingRepositoryProvider.overrideWith((ref) => repository),
         ],
-        child: const MaterialApp(home: ListingMapScreen()),
+        child:  MaterialApp(home: ListingMapScreen()),
       ),
     );
     await tester.pumpAndSettle();
@@ -41,7 +41,7 @@ void main() {
           overrides: [
             listingRepositoryProvider.overrideWith((ref) => repository),
           ],
-          child: const MaterialApp(home: ListingMapScreen()),
+          child:  MaterialApp(home: ListingMapScreen()),
         ),
       );
       await tester.pumpAndSettle();

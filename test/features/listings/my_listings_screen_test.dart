@@ -20,7 +20,7 @@ void main() {
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
           listingRepositoryProvider.overrideWith((ref) => repository),
         ],
-        child: const MaterialApp(home: MyListingsScreen()),
+        child:  MaterialApp(home: MyListingsScreen()),
       ),
     );
     await tester.pumpAndSettle();
@@ -55,7 +55,7 @@ void main() {
           currentOwnerIdProvider.overrideWith((ref) => DemoIds.owner),
           listingRepositoryProvider.overrideWith((ref) => repository),
         ],
-        child: const MaterialApp(home: MyListingsScreen()),
+        child:  MaterialApp(home: MyListingsScreen()),
       ),
     );
     await tester.pumpAndSettle();
